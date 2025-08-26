@@ -1,0 +1,5 @@
+INSERT INTO vehicle_type (type_name, created_at, updated_at)
+VALUES
+    ('Van', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Car', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Motorcycle', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
