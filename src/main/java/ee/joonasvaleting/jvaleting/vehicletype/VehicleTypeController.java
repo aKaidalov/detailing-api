@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RestControllerAdvice
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class VehicleTypeController {
