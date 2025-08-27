@@ -1,5 +1,6 @@
 package ee.joonasvaleting.jvaleting.vehicle.type;
 
+import ee.joonasvaleting.jvaleting.common.entity.AuditingEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class VehicleType {
+public class VehicleType extends AuditingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
