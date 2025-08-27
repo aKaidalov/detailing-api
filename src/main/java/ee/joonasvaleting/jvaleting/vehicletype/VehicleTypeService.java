@@ -1,4 +1,4 @@
-package ee.joonasvaleting.jvaleting.vehicle.type;
+package ee.joonasvaleting.jvaleting.vehicletype;
 
 import ee.joonasvaleting.jvaleting.common.exceptions.VehicleNotFoudException;
 import lombok.RequiredArgsConstructor;

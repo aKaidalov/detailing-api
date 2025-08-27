@@ -1,4 +1,4 @@
-package ee.joonasvaleting.jvaleting.vehicle.type;
+package ee.joonasvaleting.jvaleting.vehicletype;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

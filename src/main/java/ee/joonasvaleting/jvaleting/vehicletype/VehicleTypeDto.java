@@ -1,4 +1,4 @@
-package ee.joonasvaleting.jvaleting.vehicle.type;
+package ee.joonasvaleting.jvaleting.vehicletype;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

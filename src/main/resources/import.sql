@@ -1,5 +1,15 @@
+-- Insert demo vehicle types
 INSERT INTO vehicle_type (type_name, created_at, updated_at)
 VALUES
     ('Van', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('Car', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('Motorcycle', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- Insert demo vehicles (linking to vehicle_type by id)
+INSERT INTO vehicle (vehicle_type_id, licence_plate, vin_code, created_at, updated_at)
+VALUES
+    (1, '123ABC', '1HGCM82633A004352', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), -- Car
+    (2, '456XYZ', '1FTFW1ET1EKF51234', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), -- SUV
+    (3, '789MNO', '2HGFA165X8H123456', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), -- Motorcycle
+    (1, '555BBB', '3VWFE21C04M000123', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), -- Car
+    (2, '777CCC', '5YJSA1E26HF000678', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP); -- SUV

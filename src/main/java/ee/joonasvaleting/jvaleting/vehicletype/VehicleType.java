@@ -1,10 +1,12 @@
-package ee.joonasvaleting.jvaleting.vehicle.type;
+package ee.joonasvaleting.jvaleting.vehicletype;
 
 import ee.joonasvaleting.jvaleting.common.entity.AuditingEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "vehicle_type")
@@ -19,5 +21,4 @@ public class VehicleType extends AuditingEntity {
 
     @Column(name = "type_name", nullable = false, unique = true)
     private String typeName;
-
 }
