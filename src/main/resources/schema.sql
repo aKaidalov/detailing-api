@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS service_item (
         REFERENCES service_item (id)
         ON DELETE SET NULL
         ON UPDATE CASCADE
-)
+);
 
 CREATE TABLE IF NOT EXISTS time_slot (
     id SERIAL PRIMARY KEY,

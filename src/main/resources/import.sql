@@ -40,3 +40,13 @@ VALUES
 
     (3, 'Airport valeting', 'Full service valet; price from €50', 50.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (3, 'Extra dirty vehicle surcharge', 'Surcharge up to €20 added on top of the selected package', 0.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+-- Insert demo time slots
+INSERT INTO time_slot (start_at, end_at, is_available, max_bookings)
+VALUES
+    ('2025-09-01 09:00:00', '2025-09-01 10:00:00', TRUE, 1),
+    ('2025-09-01 10:00:00', '2025-09-01 11:00:00', TRUE, 2),
+    ('2025-09-01 11:00:00', '2025-09-01 12:00:00', FALSE, 1), -- unavailable slot
+    ('2025-09-01 13:00:00', '2025-09-01 14:30:00', TRUE, 3),  -- longer slot, more bookings
+    ('2025-09-02 09:00:00', '2025-09-02 10:00:00', TRUE, DEFAULT); -- relies on default = 1
