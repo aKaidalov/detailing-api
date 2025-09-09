@@ -14,7 +14,7 @@ public class TimeSlotService {
 
         TimeSlotDto tsd = timeSlotMapper.fromDbToDto(
                 timeSlotRepository.findTimeSlotById(id)
-                        .orElseThrow(RuntimeException::new));
+                        .orElseThrow(RuntimeException::new)); //TODO: custom exception
 
         System.out.println("Service received: " + tsd.getId());
 

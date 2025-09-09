@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface TimeSlotRepository extends JpaRepository<TimeSlot, Long> {
 
     @Query("select timeSlot from TimeSlot timeSlot where timeSlot.id = :id")
-    public Optional<TimeSlot> findTimeSlotById(@Param("id")Long id);
+    public Optional<TimeSlot> findTimeSlotById(@Param("id") Long id);
 }
