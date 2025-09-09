@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS vehicle;
 DROP TABLE IF EXISTS vehicle_type;
 DROP TABLE IF EXISTS service_item;
 DROP TABLE IF EXISTS time_slot;
+DROP TABLE IF EXISTS booking_status;
 
 CREATE TABLE IF NOT EXISTS vehicle_type (
     id SERIAL PRIMARY KEY,
@@ -55,3 +56,10 @@ CREATE TABLE IF NOT EXISTS time_slot (
     max_bookings INT NOT NULL DEFAULT 1 CHECK (max_bookings > 0)
 );
 
+
+CREATE TABLE IF NOT EXISTS booking_status (
+    id SERIAL PRIMARY KEY,
+    booking_status_name VARCHAR(100) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

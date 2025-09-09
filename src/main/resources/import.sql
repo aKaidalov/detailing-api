@@ -50,3 +50,13 @@ VALUES
     ('2025-09-01 11:00:00', '2025-09-01 12:00:00', FALSE, 1), -- unavailable slot
     ('2025-09-01 13:00:00', '2025-09-01 14:30:00', TRUE, 3),  -- longer slot, more bookings
     ('2025-09-02 09:00:00', '2025-09-02 10:00:00', TRUE, DEFAULT); -- relies on default = 1
+
+-- Insert demo booking statuses
+INSERT INTO booking_status (booking_status_name)
+VALUES
+    ('Pending'),
+    ('Confirmed'),
+    ('In Progress'),
+    ('Completed'),
+    ('Cancelled'),
+    ('No Show');
