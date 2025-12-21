@@ -1,0 +1,160 @@
+1 Goal & Scope
+==============
+The goal is to develop a functional web application prototype that automates booking processes for a small vehicle care services enterprise in Tallinn, reducing administrative burden and improving operational efficiency. The system will enable clients to independently book services through a step-by-step process while providing the business owner with centralized management of services, bookings, schedules, and basic analytics. The scope includes a public-facing booking interface and an authenticated admin dashboard, built using React + TypeScript frontend, Java Spring Boot backend, and PostgreSQL database. The MVP explicitly excludes payment integration, multi-language support, client accounts, and mobile native applications. This solution demonstrates how digital automation can optimize business processes for small enterprises in the vehicle care services domain.
+
+2 Technology Stack
+==================
+* Database: PostgreSQL
+* Backend: Java with Spring Boot
+* Frontend: React + TypeScript + Vite
+* Build Tool: Gradle
+
+3 Requirements
+==============
+
+3.1 Functional
+--------------
+
+3.1.1 Client
+
+[FR-C1] High
+  As a client, I want to make a booking without registration so I can quickly book a service
+
+[FR-C2] High
+  As a client, I want to complete booking via step-by-step form with progress indication to avoid errors
+
+[FR-C3] High
+  As a client, I want to see services grouped into categories and filter by vehicle type
+
+[FR-C4] High
+  As a client, I want to see summary of selected services and total cost before confirmation
+
+[FR-C5] High
+  As a client, I want to see only available time slots to quickly select suitable time
+
+[FR-C6] Medium
+  As a client, I want to receive notifications about booking creation, modification, and cancellation
+
+[FR-C7] Medium
+  As a client, I want to cancel my booking to free up the selected time if plans change
+
+3.1.2 Admin
+
+[FR-A1] High
+  As an admin, I want to manage service catalog (add, edit, delete) to keep offerings current
+
+[FR-A2] High
+  As an admin, I want to view all bookings and add, modify, delete them for schedule management
+
+[FR-A3] High
+  As an admin, I want to set working days and hours so system offers only available slots
+
+[FR-A4] Medium
+  As an admin, I want to manage notification settings and templates
+
+[FR-A5] Medium
+  As an admin, I want to see booking counts by day, week, month to assess workload
+
+[FR-A6] High
+  As an admin, I want the admin interface protected by authentication
+
+3.2 Non-Functional
+
+[NFR-1] Usability
+  System UI must be intuitive and maintain consistent visual style
+
+[NFR-2] Usability
+  System must work correctly on both desktop and mobile devices
+
+[NFR-3] Security
+  System must protect personal data processed during booking and administration
+
+[NFR-4] Maintainability
+  System architecture must allow for future functionality expansion
+
+4 Service & Pricing Structure (ERD V4) //TODO: Remenmber to keep UPDATED!
+======================================
+
+4.1 Pricing Model
+-----------------
+Additive formula:
+  total_price = vehicle_type.base_price
+              + package.price
+              + SUM(add_on.price)
+              + delivery_type.price
+
+Admin sets all prices manually. No multipliers.
+
+4.2 Entity Terminology
+----------------------
+| PRD Term        | DB Entity       |
+|-----------------|-----------------|
+| Vehicle Type    | vehicle_type    |
+| Service/Package | package         |
+| Sub-service     | add_on          |
+| Delivery Option | delivery_type   |
+
+4.3 Catalog Structure
+---------------------
+
+1. Vehicle Type (vehicle_type)
+   - Car (base_price: €20)
+   - Van (base_price: €40)
+   - [Admin can add new types with custom base_price]
+   - has is_deliverable flag (can staff pick up this vehicle?)
+
+2. Package (package) - exactly 1 per booking
+   * Full wash (€30): interior + exterior
+   * Exterior wash (€10): pre-soak, tar removal, hand wash, wheel wash, drying, door jamb, tire shine
+   * Interior cleaning (€10): floor mats, windows, surfaces, vents, vacuuming
+   * [Admin can add new packages]
+   Note: Packages linked to vehicle_types via vehicle_service junction
+
+3. Add-on (add_on) - optional, multiple allowed
+   Linked to packages via package_add_on junction:
+
+   * Package: Full wash
+       * Rust spot removal (+€10)
+       * Quick ceramic coating (+€15)
+       * Body waxing (+€30)
+       * Polishing (+€100)
+       * Car ceramic coating (+€100)
+       * Textile seat cleaning (+€50)
+       * Leather seat care (+€50)
+       * Odor removal with ozone (+€35)
+       * Leather ceramic coating (+€100)
+       * Extra dirty vehicle surcharge (+€20)
+       * [Admin can add new add-ons]
+
+   * Package: Exterior wash
+       * Rust spot removal (+€10)
+       * Quick ceramic coating (+€15)
+       * Body waxing (+€30)
+       * Polishing (+€100)
+       * Car ceramic coating (+€100)
+       * Extra dirty vehicle surcharge (+€20)
+       * [Admin can add new add-ons]
+
+   * Package: Interior cleaning
+       * Textile seat cleaning (+€50)
+       * Leather seat care (+€50)
+       * Odor removal with ozone (+€35)
+       * Leather ceramic coating (+€100)
+       * Extra-dirty vehicle surcharge (+€20)
+       * [Admin can add new add-ons]
+
+4. Delivery Type (delivery_type) - REQUIRED (exactly 1 per booking)
+   1. Drop-off - I bring it myself (€0, requires_address=false)
+   2. Pickup - we pick up the car (+€15, requires_address=true)
+   3. [Admin can add new delivery options]
+   Note: "I bring it myself" is a delivery_type with price=0
+
+4.4 Booking Flow Summary
+------------------------
+1. Select vehicle_type (exactly 1)
+2. Select package (exactly 1, must be linked to vehicle_type)
+3. Select add_ons (optional, must be linked to selected package / or can be independently added by admin)
+4. Select time_slot (required)
+5. Select delivery_type (required)
+6. Enter client details
+7. Submit booking

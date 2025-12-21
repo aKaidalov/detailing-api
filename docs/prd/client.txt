@@ -1,0 +1,145 @@
+5 Client Flow
+=============
+Related: overview.txt (requirements), architecture.txt (time slots, delivery logic)
+
+5.1 Landing Page
+----------------
+Purpose: Quick entry point to booking flow with essential business info.
+
+Layout Sections:
+1. Hero
+   - Business name/logo
+   - Tagline (e.g., "Professional car care in Tallinn")
+   - Primary CTA button: "Book Now" → starts booking flow
+
+2. Services Preview
+   - Display main packages (from DB: package entity)
+   - Show "from €X" pricing (vehicle_type.base_price + package.price)
+   - Brief description per package
+   - CTA per package: "Book this" → booking flow with package pre-selected (future)
+
+3. How It Works (static)
+   - Step 1: Choose your service
+   - Step 2: Pick a time
+   - Step 3: We handle the rest
+
+4. Business Info
+   - Location address (from DB: BusinessSettings or static)
+   - Phone number
+   - Email
+   - Embedded map (Google Maps / static image)
+
+5. Footer
+   - Contact info (repeated)
+   - Links: Privacy Policy, Terms of Service
+   - Social media (optional, future)
+
+Data Sources:
+- Dynamic (from DB): package (name, description, price), vehicle_type (base_price)
+- Static/Config: business_settings (name, address, phone, email)
+
+User Actions:
+- Click "Book Now" → Navigate to booking flow (Step 1)
+- Click package "Book this" → Navigate to booking flow with package pre-selected (future)
+- Click phone/email → Native device action (call/mail)
+- Click address → Open in maps
+
+Notes:
+- No login required
+- Mobile responsive (single column on mobile)
+- Packages pulled from active packages only (is_active = true)
+- "From" price = MIN(vehicle_type.base_price) + package.price
+
+ERD-relevant (ERD V4): //TODO: Remember to keep UPDATED!
+- package entity (name, description, price, is_active)
+- vehicle_type entity (base_price for "from" pricing)
+- business_settings entity (or use config/env for MVP)
+
+
+5.2 Booking Flow
+----------------
+Note: Duration is excluded from services on purpose, because admin will set time slot duration manually. Entities might contain it, but won't use in MVP.
+
+Step 1: Vehicle Type
+~~~~~~~~~~~~~~~~~~~~
+User Action: Selects the type of vehicle.
+Data Collected: vehicleTypeId
+Data Displayed: Available vehicle types (e.g., Sedan, SUV / Van) with brief descriptions.
+Business Rules: Exactly one vehicle type must be selected to proceed.
+
+Step 2: Wash Package (Service)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+User Action: Selects a main service package.
+Data Collected: packageId, price
+Data Displayed: Available wash packages with short descriptions, price per package.
+Business Rules:
+- Exactly one package must be selected
+- Available packages depend on selected vehicle type
+- Base package (Service) is required before add-ons (sub-services)
+
+Step 3: Add-ons (add_on)
+~~~~~~~~~~~~~~~~~~~~~~~~
+User Action: Selects optional additional services.
+Data Collected: addOnIds[] (via booking_add_on junction)
+Data Displayed:
+- List of available add-ons with brief descriptions
+- Extra price per add-on
+- Visual indication of selected add-ons
+- Current selection summary (base package + add-ons)
+- Updated total price
+Business Rules:
+- Add-ons are optional (0 or more)
+- Multiple add-ons can be selected
+- Only add-ons linked to selected package shown (via package_add_on)
+- Total price is recalculated dynamically
+
+Step 4: Date & Time
+~~~~~~~~~~~~~~~~~~~
+User Action: Selects an available appointment date and timeSlot.
+Data Collected: date, startTime, endTime
+Data Displayed:
+- Calendar with selectable dates
+- List of available time slots for selected date
+- Visual indication of selected date and time
+Business Rules:
+- Date and time selection is mandatory
+- Only available time slots are selectable
+- Availability depends on created time slots from admin side and existing bookings
+
+Step 5: Delivery (delivery_type)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+User Action: Selects a vehicle delivery method.
+Data Collected: delivery_type_id (NOT NULL), address (if requires_address=true)
+Data Displayed:
+- Available delivery options (from delivery_type entity)
+- Associated cost per option (delivery_type.price)
+- Service location or pickup details
+Business Rules:
+- Exactly one delivery method MUST be selected (NOT NULL)
+- "I bring it myself" is a delivery_type option with price=0
+- Delivery fee depends on selected method
+- If delivery_type.requires_address=true, address field becomes shown and required
+
+Step 6: Confirmation
+~~~~~~~~~~~~~~~~~~~~
+User Action: Enters personal and vehicle information, reviews booking details, confirms the booking.
+Data Collected:
+- firstName
+- lastName
+- phoneNumber
+- email
+- vehicleRegistrationNumber
+- additionalComments
+- termsAccepted (boolean)
+Data Displayed:
+- Complete booking summary (vehicle type, services, date & time, delivery method)
+- Time slot duration and total price
+- Terms of service and privacy policy
+Business Rules:
+- All required fields must be completed
+- Terms and privacy policy must be accepted
+- Booking can be confirmed only after successful validation of all data
+
+5.3 Terms and privacy policy
+----------------
+- Simple page for MVP

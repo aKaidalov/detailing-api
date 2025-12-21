@@ -1,0 +1,49 @@
+11. Questions & Ideas
+=====================
+For future planning and open items.
+
+
+Resolved (ERD V4) //TODO: Remenmber to keep UPDATED!
+-----------------
+[x] Multi-language support: How does it affect project architecture?
+    → Resolved: Simple VARCHAR for MVP. JSON columns deferred to future version.
+    → See architecture.txt for details.
+
+[x] Translation fields for admin-created content
+    → Resolved: MVP uses single-language VARCHAR columns.
+    → Future: JSON columns with EN/ET/RU translations.
+
+[x] User/Admin entity structure
+    → Resolved: Single `user` table with role ENUM (ADMIN, CLIENT).
+    → MVP uses ADMIN role only. CLIENT role for future customer accounts.
+
+[x] Delivery option: optional vs required?
+    → Resolved: delivery_type_id is NOT NULL (required).
+    → "I bring it myself" is a delivery_type option with price=0.
+
+[x] Package selection: junction table vs direct FK?
+    → Resolved: Direct FK (booking.package_id) - exactly 1 package per booking.
+    → Enforced at database level.
+
+[x] Pricing model
+    → Resolved: Pure additive formula.
+    → total_price = vehicle_type.base_price + package.price + SUM(add_on.price) + delivery_type.price
+
+
+Open
+----
+[ ] Should be added "policy" page as well. CRITICAL for car_number storage!
+[ ] Where is address information gathered? Is it wrtitten in "client.txt"?
+
+
+Future Enhancements (Not MVP)
+-----------------------------
+- Payment integration
+- Client accounts / login (uses existing user table with CLIENT role)
+- Mobile native applications
+- SMS notifications
+- Booking confirmation link (before instant cancel)
+- Admin email alerts for new bookings
+- Booking reminders (24h before)
+- Multi-language content (JSON columns for translatable entities)
+- JWT authentication (currently session-based)

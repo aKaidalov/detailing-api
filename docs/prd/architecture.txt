@@ -1,0 +1,84 @@
+Architecture & Business Logic
+=============================
+Related: admin.txt (admin management), client.txt (booking flow)
+
+
+7. Time Slot & Availability Logic
+=================================
+
+Admin Pre-Created Slot System:
+- Admin manually creates time slot templates (e.g., "09:00-11:00", "14:00-16:00")
+- Admin assigns templates to specific calendar dates
+- Clients can only book from pre-created, assigned slots
+- No dynamic generation from working hours
+
+Availability Rules:
+- Slot unavailable if: already booked, set to INACTIVE status, deleted, or not assigned to that date
+- Admin can deactivate slots individually or at template level
+- Schedule flexibility: different slot patterns can be assigned to different days
+
+
+8. Delivery Options Logic (delivery_type entity)
+================================================
+
+Delivery Types (ERD V4):
+- Option 1: Drop-off - "I bring it myself" (price=0, requires_address=false)
+- Option 2: Pickup - "We pick up the car" (price=€15, requires_address=true)
+- Option n: Admin can add more options
+
+Entity Fields:
+- id (serial, PK)
+- name (varchar)
+- price (decimal)
+- requires_address (boolean) - if true, booking.address is required
+- is_active (boolean)
+
+Business Rules:
+- delivery_type_id is NOT NULL on booking (required field)
+- "I bring it myself" is a delivery_type option, not absence of selection
+- If requires_address=true, validate booking.address is not empty
+
+
+9. Booking Lifecycle
+====================
+
+Status Definitions:
+- PENDING: Booking created, awaiting confirmation
+- CONFIRMED: Booking confirmed by admin
+- CANCELLED_BY_CUSTOMER: Client cancelled the booking
+- CANCELLED_BY_ADMIN: Admin cancelled the booking (with reason)
+- COMPLETED: Service has been delivered
+
+Status Transitions:
+PENDING → CONFIRMED → COMPLETED
+PENDING → CANCELLED_BY_CUSTOMER
+Any → CANCELLED_BY_ADMIN
+
+
+Multi-Language Support (Architecture)
+=====================================
+
+MVP Decision: Simple VARCHAR columns (no JSON i18n)
+
+Rationale:
+- MVP focuses on core booking functionality
+- Multi-language content adds complexity
+- Can be added in future version with JSON columns
+
+MVP Approach:
+- All entity names/descriptions stored as simple VARCHAR
+- Single language (English or Estonian as primary)
+- Frontend UI text handled via i18n files (not database)
+
+Future Enhancement (Post-MVP):
+- Migrate to JSON columns for translatable content
+- Languages: EN (required), ET (optional), RU (optional)
+- Translatable entities: vehicle_type, package, add_on, delivery_type, notification
+
+Future Storage Example:
+{
+  "nameTranslations": {"en": "Full Wash", "et": "Täispesu", "ru": "Полная мойка"},
+  "descriptionTranslations": {"en": "...", "et": "...", "ru": "..."}
+}
+
+Note: Static UI text (buttons, labels, errors) always handled via frontend i18n files.

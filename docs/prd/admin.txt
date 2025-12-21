@@ -1,0 +1,238 @@
+6 Admin Dashboard
+=================
+Related: architecture.txt (time slots, multi-language), notifications.txt
+
+Authentication (FR-A6)
+----------------------
+- Admin login with email/password (user entity with role=ADMIN)
+- Session management (Session-based first -> JWT token)
+- Password reset functionality (later)
+- Single admin account for MVP
+- Future: CLIENT role for customer accounts
+
+
+Dashboard Sections & Actions
+============================
+
+6.1 Services Management (FR-A1)
+-------------------------------
+Purpose: Keep service offerings current and accurately priced.
+ERD entities: vehicle_type, package, add_on, delivery_type, vehicle_service, package_add_on
+
+6.1.1 Vehicle Types (vehicle_type entity)
+Actions:
+- View all vehicle types (list)
+- Add new vehicle type (name, description, base_price, is_deliverable)
+- Edit existing vehicle type
+- Delete vehicle type (soft delete via is_active=false)
+- Reorder display sequence (display_order)
+
+6.1.2 Packages (package entity)
+Actions:
+- View all packages (list)
+- Add new package (name, description, price)
+- Edit existing package
+- Delete package (soft delete via is_active=false)
+- Activate/Deactivate package (is_active flag)
+- Reorder display sequence (display_order)
+- Link/unlink package to vehicle types (via vehicle_service junction)
+
+6.1.3 Add-ons (add_on entity)
+Actions:
+- View all add-ons (grouped by linked package)
+- Add new add-on (name, description, price)
+- Edit existing add-on
+- Delete add-on (soft delete via is_active=false)
+- Activate/Deactivate add-on (is_active flag)
+- Link/unlink add-on to packages (via package_add_on junction)
+- Add add-on independently to booking (via booking_add_on junction)
+
+6.1.4 Delivery Types (delivery_type entity)
+Actions:
+- View all delivery types (list)
+- Add new delivery type (name, price, requires_address flag)
+- Edit existing delivery type
+- Delete delivery type (soft delete via is_active=false)
+- Activate/Deactivate delivery type (is_active flag)
+Note: "I bring it myself" (price=0, requires_address=false) is a required option
+
+
+6.2 Bookings Management (FR-A2)
+-------------------------------
+Purpose: Full control over schedule and customer appointments.
+
+6.2.1 View Bookings
+Views:
+- List view (sortable, filterable table)
+- Calendar view (daily/weekly/monthly)
+
+Filters:
+- By status (PENDING, CONFIRMED, CANCELLED_BY_CUSTOMER, CANCELLED_BY_ADMIN, COMPLETED)
+- By date range
+- By vehicle type
+- By service
+- Search by client name/phone/email/vehicle registration
+
+6.2.2 Booking Actions
+Actions:
+- View booking details (full summary)
+- Create new booking manually (same flow as client, but admin can override)
+- Edit booking:
+    * Change date/time slot
+    * Modify services/sub-services
+    * Update client information
+    * Change delivery option
+    * Add admin notes
+- Change booking status:
+    * PENDING → CONFIRMED
+    * Any → CANCELLED_BY_ADMIN (with reason)
+    * CONFIRMED → COMPLETED
+- Delete booking (soft delete, keeps history)
+- Resend confirmation notification
+
+
+6.3 Time Slots Management (FR-A3)
+---------------------------------
+Purpose: Control when clients can book appointments.
+
+6.3.1 Slot Templates
+Actions:
+- View all templates (list)
+- Create template (start time, end time, label)
+- Edit template
+- Delete template (only if not assigned to future dates)
+- Clone template
+
+6.3.2 Calendar Assignment
+Actions:
+- View calendar with assigned slots
+- Assign template(s) to specific date
+- Assign template(s) to date range
+- Bulk assign (e.g., "every Monday for next month")
+- Remove slot assignment from date
+
+6.3.3 Slot Status Management
+Actions:
+- View all slots for a date
+- Activate/Deactivate individual slot
+- Bulk activate/deactivate slots
+- View slot booking status (available/booked/inactive)
+
+
+6.4 Notification Management (FR-A4)
+-----------------------------------
+Purpose: Control customer communications.
+
+6.4.1 Notification Settings
+Actions:
+- Toggle notification types on/off:
+    * Booking confirmation
+    * Booking modification
+    * Booking cancellation
+    * Booking reminder (future)
+- Set notification channel (email for MVP)
+
+6.4.2 Email Templates
+Actions:
+- View all templates
+- Edit template content:
+    * Subject line
+    * Body text
+    * Available placeholders: {clientName}, {date}, {time}, {services}, {totalPrice}, {bookingId}
+- Preview template with sample data
+- Reset to default template
+
+
+6.5 Analytics (FR-A5)
+---------------------
+Purpose: Assess workload and business performance.
+
+6.5.1 Booking Statistics
+Metrics:
+- Total bookings count (day/week/month/custom range)
+- Bookings by status breakdown
+- Bookings trend chart (line graph)
+
+6.5.2 Service Popularity (basic)
+Metrics:
+- Most booked services
+- Most booked sub-services
+- Vehicle type distribution
+
+6.5.3 Revenue Overview (basic)
+Metrics:
+- Total revenue (day/week/month)
+- Average booking value
+- Revenue by service type
+
+
+6.6 Settings
+------------
+Purpose: Configure business and system parameters.
+
+6.6.1 Business Information
+Actions:
+- Edit business name
+- Edit contact information (phone, email, address)
+- Edit service location address (displayed to clients)
+
+6.6.2 Account Settings
+Actions:
+- Change admin password
+- Update admin email
+- View login history (basic)
+
+
+Admin UI Structure
+==================
+Sidebar Navigation:
+├── Dashboard (overview/home)
+├── Bookings
+│   ├── List View
+│   └── Calendar View
+├── Catalog (Services Management)
+│   ├── Vehicle Types (vehicle_type)
+│   ├── Packages (package)
+│   ├── Add-ons (add_on)
+│   └── Delivery Types (delivery_type)
+├── Time Slots
+│   ├── Templates (time_slot_template)
+│   └── Calendar (time_slot)
+├── Notifications
+│   ├── Settings
+│   └── Templates (notification)
+├── Analytics
+└── Settings
+    ├── Business Info (business_settings)
+    └── Account (user)
+
+
+Key Admin Workflows
+===================
+
+Workflow 1: Setting Up a New Week
+1. Go to Time Slots → Calendar
+2. Select date range for the week
+3. Assign time_slot_template(s) to each day (creates time_slot records)
+4. Review and confirm
+
+Workflow 2: Adding a New Package
+1. Go to Catalog → Packages
+2. Click "Add Package"
+3. Enter name, description, price
+4. Save
+5. Go to Catalog → Vehicle Types → Link package to applicable types (vehicle_service)
+6. Go to Catalog → Add-ons → Link relevant add-ons to package (package_add_on)
+
+Workflow 3: Handling a Booking Change Request
+1. Go to Bookings → find booking
+2. Open booking details
+3. Edit date/time or package/add-ons as requested
+4. Save changes
+5. System sends modification notification (notification_log)
+
+Workflow 4: Cancelling a Busy Day
+1. Go to Time Slots → Calendar
+2. Select the date
+3. Deactivate all time_slots for that date (status=BLOCKED)
+4. Existing bookings need manual cancellation with notification

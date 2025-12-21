@@ -1,0 +1,97 @@
+10. Notifications
+=================
+Related: admin.txt (notification management), architecture.txt (multi-language)
+
+
+10.1 Overview
+-------------
+Channel: Email (MVP)
+Recipients: Client
+Management: Admin can toggle on/off, edit templates (see admin.txt section 6.4)
+
+
+10.2 Booking Reference Format
+-----------------------------
+Approach: Hybrid
+Internal (DB): UUID (primary key)
+Customer-facing: First 8 characters of UUID, uppercase
+Example: UUID 550e8400-e29b-... → Display #550E8400
+Reasoning: Zero collision risk, no counter logic, readable for phone/email
+
+
+10.3 Notification Types
+-----------------------
+
+BOOKING_CONFIRMATION
+- Trigger: Booking created (by client or admin)
+- Recipient: Client
+- Timing: Immediate
+- Content: Reference ID, date/time, services, total price, location, cancellation link
+
+BOOKING_MODIFICATION
+- Trigger: Booking edited (date, time, services, or delivery)
+- Recipient: Client
+- Timing: Immediate
+- Content: Updated details, what changed, new total if applicable
+
+BOOKING_CANCELLATION
+- Trigger: Booking cancelled (by client or admin)
+- Recipient: Client
+- Timing: Immediate
+- Content: Cancellation confirmation, reason (if by admin), rebooking link
+- Note: Instant cancellation for MVP (no confirmation link)
+
+BOOKING_REMINDER [future]
+- Trigger: Scheduled (e.g., 24h before appointment)
+- Recipient: Client
+- Timing: Configurable
+- Content: Reminder with booking details, location/pickup info
+
+ADMIN_NEW_BOOKING_ALERT [future]
+- Trigger: New booking by client
+- Recipient: Admin email
+- Note: MVP uses dashboard view only
+
+
+10.4 Template Placeholders
+--------------------------
+{clientName}, {bookingRef}, {date}, {time}, {services}, {subServices},
+{deliveryOption}, {totalPrice}, {businessName}, {businessPhone},
+{businessAddress}, {cancellationLink}, {rebookingLink}
+
+
+10.5 Default Templates
+----------------------
+
+BOOKING_CONFIRMATION
+Subject: "Booking confirmed – #{bookingRef}"
+Body:
+  - Greeting: "Hi {clientName}"
+  - Reference: #{bookingRef}
+  - Date & time
+  - Services list with prices
+  - Delivery method
+  - Total price
+  - Location / pickup instructions
+  - Cancellation link
+  - Business contact info
+
+BOOKING_MODIFICATION
+Subject: "Booking updated – #{bookingRef}"
+Body:
+  - Greeting
+  - Reference
+  - What changed (highlighted)
+  - New date/time/services if changed
+  - New total if changed
+  - Business contact info
+
+BOOKING_CANCELLATION
+Subject: "Booking cancelled – #{bookingRef}"
+Body:
+  - Greeting
+  - Confirmation of cancellation
+  - Original booking details (date, time)
+  - Reason (if cancelled by admin)
+  - Rebooking link
+  - Business contact info
