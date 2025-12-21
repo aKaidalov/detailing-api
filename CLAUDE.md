@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-JValeting is a Spring Boot REST API for managing vehicle valet services and bookings. Built with Spring Boot 3.5.5, Java 21, PostgreSQL, and Gradle.
+Detailing API is a Spring Boot REST API for managing vehicle detailing services and bookings. Built with Spring Boot 3.5.5, Java 21, PostgreSQL, and Gradle.
+
+See `docs/prd/` for full business requirements and `docs/erd/v4/erd.md` for the data model.
 
 ## Build & Development Commands
 
@@ -27,7 +29,7 @@ docker-compose up -d          # Start PostgreSQL
 **Layered REST API with feature modules:**
 
 ```
-src/main/java/ee/joonasvaleting/jvaleting/
+src/main/java/ee/detailing/api/
 ├── {feature}/
 │   ├── *Entity.java      # JPA entity
 │   ├── *Controller.java  # REST endpoints
@@ -40,20 +42,11 @@ src/main/java/ee/joonasvaleting/jvaleting/
     └── exceptions/                    # Custom exceptions
 ```
 
-**Current feature modules:** `bookingstatus`, `serviceitem`, `timeslot`, `vehicle`, `vehicletype`
-
 ## Key Patterns
 
 - **Lombok:** `@RequiredArgsConstructor` for constructor injection, `@Data`/`@Getter`/`@Setter` for entities/DTOs
 - **MapStruct:** Interface-based mappers with `@Mapper(componentModel = "spring")`
 - **Manual schema management:** `spring.jpa.hibernate.ddl-auto=none`, schema in `schema.sql`, demo data in `import.sql`
-
-## Domain Model
-
-- **VehicleType** → **Vehicle** (one-to-many)
-- **ServiceItem** → self-referencing parent-child hierarchy (for service bundles)
-- **TimeSlot** - booking time windows with availability and max bookings
-- **BookingStatus** - status tracking (Pending, Confirmed, In Progress, Completed, Cancelled, No Show)
 
 ## Database
 

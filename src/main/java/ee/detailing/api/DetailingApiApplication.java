@@ -1,13 +1,13 @@
-package ee.joonasvaleting.jvaleting;
+package ee.detailing.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class JvaletingApplication {
+public class DetailingApiApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(JvaletingApplication.class, args);
+        SpringApplication.run(DetailingApiApplication.class, args);
     }
 
 }

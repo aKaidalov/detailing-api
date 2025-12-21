@@ -1,4 +1,4 @@
-package ee.joonasvaleting.jvaleting.common.entity;
+package ee.detailing.api.common.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;

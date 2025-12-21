@@ -1,10 +1,10 @@
-package ee.joonasvaleting.jvaleting;
+package ee.detailing.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class JvaletingApplicationTests {
+class DetailingApiApplicationTests {
 
     @Test
     void contextLoads() {

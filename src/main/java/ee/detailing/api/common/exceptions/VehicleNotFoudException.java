@@ -1,4 +1,4 @@
-package ee.joonasvaleting.jvaleting.common.exceptions;
+package ee.detailing.api.common.exceptions;
 
 public class VehicleNotFoudException extends RuntimeException {
     public VehicleNotFoudException(String message) {
