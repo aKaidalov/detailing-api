@@ -53,3 +53,14 @@ src/main/java/ee/detailing/api/
 PostgreSQL on localhost:5432 (via Docker Compose). Connection: `mydatabase` / `myuser` / `secret`
 
 Schema managed manually via SQL files - modify `schema.sql` for DDL changes.
+
+## Development Workflow
+
+See `docs/ROADMAP.md` for:
+- Current implementation status
+- Feature completion checklist
+- Session history and context
+
+**Session commands:**
+- Start: "Read docs/ROADMAP.md and continue from where we left off"
+- End: "Update ROADMAP.md with progress"
