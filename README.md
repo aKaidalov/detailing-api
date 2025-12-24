@@ -12,6 +12,7 @@ Executes all unit and integration tests to verify business logic.
 
 ### Start PostgreSQL
 `docker-compose up -d`
+`curl http://localhost:8080/actuator/health`
 
 ### Run the API
 `./gradlew bootRun`
