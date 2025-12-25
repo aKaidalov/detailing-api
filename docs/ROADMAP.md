@@ -1,9 +1,9 @@
 # Detailing API - Development Roadmap
 
 ## Current Status
-**Phase:** 2 of 5 - Catalog Module
-**Focus:** VehicleType, Package, AddOn, DeliveryType
-**Last working on:** Phase 1 complete (User, BusinessSettings, Auth, API endpoints)
+**Phase:** 3 of 5 - Scheduling Module
+**Focus:** TimeSlotTemplate, TimeSlot, Availability logic
+**Last working on:** Phase 2 complete (VehicleType, Package, AddOn, DeliveryType)
 
 ---
 
@@ -36,15 +36,15 @@ PUT    /api/v1/admin/business-settings
 
 ---
 
-## Phase 2: Catalog Module
+## Phase 2: Catalog Module ✓
 > Service catalog management (no external dependencies)
 
-- [ ] VehicleType module (entity/repo/service/controller/DTOs)
-- [ ] Package module + VehicleService junction
-- [ ] AddOn module + PackageAddOn junction
-- [ ] DeliveryType module
+- [x] VehicleType module (entity/repo/service/controller/DTOs)
+- [x] Package module + VehicleTypePackage junction
+- [x] AddOn module + PackageAddOn junction
+- [x] DeliveryType module
 
-### Phase 2 API Outline
+### Phase 2 API ✓
 ```
 # Public (client booking flow)
 GET    /api/v1/vehicle-types
@@ -170,6 +170,7 @@ GET    /api/v1/admin/analytics/revenue?period={day|week|month}
 
 | Summary | Next Steps |
 |---------|------------|
+| Phase 2 complete: VehicleType, Package, AddOn, DeliveryType modules (24 files) | Phase 3 - Scheduling |
 | Phase 1 complete: User, BusinessSettings, Auth, SecurityConfig, DebugRunner | Phase 2 - Catalog |
 | import.sql complete (all demo data) | User + BusinessSettings entities |
 | schema.sql complete (14 tables, 5 ENUMs) | import.sql |
