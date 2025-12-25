@@ -7,7 +7,7 @@
 -- =============================================
 -- Password: admin123 (BCrypt hash)
 INSERT INTO "user" (email, password_hash, role, is_active, created_at, updated_at)
-VALUES ('admin@detailing.ee', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqTBiPzVqGKnGVd0.XjPHCpPOQeGm', 'ADMIN', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+VALUES ('admin@detailing.ee', '$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW', 'ADMIN', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- =============================================
 -- BUSINESS SETTINGS
