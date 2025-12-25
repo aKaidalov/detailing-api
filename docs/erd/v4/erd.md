@@ -104,7 +104,6 @@ erDiagram
         varchar_20 phone
         varchar_20 vehicle_reg_number
         decimal_10_2 total_price
-        date booking_date
         text notes
         text address
         enum status
@@ -142,7 +141,7 @@ erDiagram
     %% JUNCTION TABLES
     %% ==========================================
 
-    vehicle_service {
+    vehicle_type_package {
         serial id PK
         int vehicle_type_id FK
         int package_id FK
@@ -165,8 +164,8 @@ erDiagram
     %% ==========================================
 
     %% Catalog relationships (M:N via junction tables)
-    vehicle_type ||--o{ vehicle_service : "has packages"
-    package ||--o{ vehicle_service : "available for"
+    vehicle_type ||--o{ vehicle_type_package : "has packages"
+    package ||--o{ vehicle_type_package : "available for"
 
     package ||--o{ package_add_on : "has add-ons"
     add_on ||--o{ package_add_on : "available in"
@@ -206,7 +205,7 @@ erDiagram
 | Transaction | `booking` | Customer reservation with all selections |
 | Notification | `notification` | Email templates |
 | Notification | `notification_log` | Sent notification audit trail |
-| Junction | `vehicle_service` | Links vehicle types to available packages |
+| Junction | `vehicle_type_package` | Links vehicle types to available packages |
 | Junction | `package_add_on` | Links packages to available add-ons |
 | Junction | `booking_add_on` | Links bookings to selected add-ons |
 
@@ -242,5 +241,5 @@ total_price = vehicle_type.base_price
 | Exactly 1 package per booking | Direct FK: `booking.package_id` |
 | 1 booking per time slot | UNIQUE on `booking.time_slot_id` |
 | Delivery always required | NOT NULL on `booking.delivery_type_id` |
-| Package-vehicle compatibility | Check via `vehicle_service` junction |
+| Package-vehicle compatibility | Check via `vehicle_type_package` junction |
 | Add-on availability | Check via `package_add_on` junction |

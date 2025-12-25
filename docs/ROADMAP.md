@@ -2,8 +2,8 @@
 
 ## Current Status
 **Phase:** 1 of 5 - Foundation
-**Focus:** schema.sql
-**Last working on:** Infrastructure setup complete, ready for schema.sql
+**Focus:** Entity implementation
+**Last working on:** import.sql complete (demo data for all tables)
 
 ---
 
@@ -20,8 +20,8 @@
 ## Phase 1: Foundation
 > Database schema and core infrastructure
 
-- [ ] Create schema.sql with all 14 tables
-- [ ] Create import.sql with demo data
+- [x] Create schema.sql with all 14 tables
+- [x] Create import.sql with demo data
 - [ ] User entity + repository
 - [ ] BusinessSettings entity + repository
 
@@ -167,6 +167,8 @@ GET    /api/v1/admin/analytics/revenue?period={day|week|month}
 
 | Date | Summary | Next Steps |
 |------|---------|------------|
+| 2024-12-25 | import.sql complete (all demo data) | User + BusinessSettings entities |
+| 2024-12-25 | schema.sql complete (14 tables, 5 ENUMs) | import.sql |
 | 2024-12-25 | Infrastructure setup (deps, security, test config) | schema.sql |
 | 2024-12-24 | Created roadmap structure | Begin Phase 1 |
 
