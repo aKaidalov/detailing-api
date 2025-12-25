@@ -1,9 +1,9 @@
 # Detailing API - Development Roadmap
 
 ## Current Status
-**Phase:** 1 of 5 - Foundation
-**Focus:** Entity implementation
-**Last working on:** import.sql complete (demo data for all tables)
+**Phase:** 2 of 5 - Catalog Module
+**Focus:** VehicleType, Package, AddOn, DeliveryType
+**Last working on:** Phase 1 complete (User, BusinessSettings, Auth, API endpoints)
 
 ---
 
@@ -17,15 +17,17 @@
 
 ---
 
-## Phase 1: Foundation
+## Phase 1: Foundation ✓
 > Database schema and core infrastructure
 
 - [x] Create schema.sql with all 14 tables
 - [x] Create import.sql with demo data
-- [ ] User entity + repository
-- [ ] BusinessSettings entity + repository
+- [x] User entity + repository
+- [x] BusinessSettings entity + repository
+- [x] Auth module (login, session-based)
+- [x] Phase 1 API endpoints
 
-### Phase 1 API Outline
+### Phase 1 API ✓
 ```
 POST   /api/v1/admin/login
 GET    /api/v1/admin/business-settings
@@ -153,24 +155,26 @@ GET    /api/v1/admin/analytics/revenue?period={day|week|month}
 
 ## Decisions Log
 
-| Date | Decision | Rationale |
-|------|----------|-----------|
-| 2024-12-25 | API versioning: /api/v1/ | Future-proofing for breaking changes |
-| 2024-12-25 | Same Docker PostgreSQL for tests | MVP simplicity, no TestContainers |
-| — | Session-based auth for MVP | Simpler than JWT, per PRD |
-| — | Manual schema.sql management | More control, per CLAUDE.md |
-| — | Feature modules pattern | One package per domain entity |
+| Decision | Rationale |
+|----------|-----------|
+| API versioning: /api/v1/ | Future-proofing for breaking changes |
+| Same Docker PostgreSQL for tests | MVP simplicity, no TestContainers |
+| Session-based auth for MVP | Simpler than JWT, per PRD |
+| Manual schema.sql management | More control, per CLAUDE.md |
+| Feature modules pattern | One package per domain entity |
+| DebugRunner for dev password | Auto-fix BCrypt hash mismatch on startup |
 
 ---
 
 ## Session History
 
-| Date | Summary | Next Steps |
-|------|---------|------------|
-| 2024-12-25 | import.sql complete (all demo data) | User + BusinessSettings entities |
-| 2024-12-25 | schema.sql complete (14 tables, 5 ENUMs) | import.sql |
-| 2024-12-25 | Infrastructure setup (deps, security, test config) | schema.sql |
-| 2024-12-24 | Created roadmap structure | Begin Phase 1 |
+| Summary | Next Steps |
+|---------|------------|
+| Phase 1 complete: User, BusinessSettings, Auth, SecurityConfig, DebugRunner | Phase 2 - Catalog |
+| import.sql complete (all demo data) | User + BusinessSettings entities |
+| schema.sql complete (14 tables, 5 ENUMs) | import.sql |
+| Infrastructure setup (deps, security, test config) | schema.sql |
+| Created roadmap structure | Begin Phase 1 |
 
 ---
 
