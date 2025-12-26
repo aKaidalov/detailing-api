@@ -1,9 +1,9 @@
 # Detailing API - Development Roadmap
 
 ## Current Status
-**Phase:** 3 of 5 - Scheduling Module
-**Focus:** TimeSlotTemplate, TimeSlot, Availability logic
-**Last working on:** Phase 2 complete (VehicleType, Package, AddOn, DeliveryType)
+**Phase:** 4 of 5 - Booking Module
+**Focus:** Booking entity, price calculation, validation
+**Last working on:** Phase 3 complete (TimeSlotTemplate, TimeSlot, Availability logic)
 
 ---
 
@@ -80,14 +80,15 @@ DELETE /api/v1/admin/delivery-types/{id}
 
 ---
 
-## Phase 3: Scheduling Module
+## Phase 3: Scheduling Module ✓
 > Time slot management
 
-- [ ] TimeSlotTemplate module
-- [ ] TimeSlot module
-- [ ] Availability logic
+- [x] TimeSlotTemplate module (entity/repo/service/controller/DTOs)
+- [x] TimeSlot module (entity/repo/service/controller/DTOs)
+- [x] Availability logic (public endpoint returns AVAILABLE slots only)
+- [x] Integration tests (2 controller tests, 14 test cases)
 
-### Phase 3 API Outline
+### Phase 3 API ✓
 ```
 # Public
 GET    /api/v1/time-slots?date={date}
@@ -171,6 +172,7 @@ GET    /api/v1/admin/analytics/revenue?period={day|week|month}
 
 | Summary                                                                     | Next Steps |
 |-----------------------------------------------------------------------------|------------|
+| Phase 3 complete: Scheduling modules (TimeSlotTemplate, TimeSlot) + integration tests (15 files) | Phase 4 - Booking |
 | Phase 2 complete: Catalog modules (VehicleType, Package, AddOn, DeliveryType) + integration tests (28 files)         | Phase 3 - Scheduling |
 | Phase 1 complete: User, BusinessSettings, Auth, SecurityConfig, DebugRunner | Phase 2 - Catalog |
 | import.sql complete (all demo data)                                         | User + BusinessSettings entities |
