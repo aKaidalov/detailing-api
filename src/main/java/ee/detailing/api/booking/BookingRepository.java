@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,4 +45,16 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
            "LEFT JOIN FETCH b.deliveryType " +
            "ORDER BY b.createdAt DESC")
     List<Booking> findAllWithDetails();
+
+    // Analytics queries
+    Long countByStatusAndCreatedAtBetween(BookingStatus status, LocalDateTime start, LocalDateTime end);
+
+    Long countByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+
+    @Query("SELECT COALESCE(SUM(b.totalPrice), 0) FROM Booking b " +
+           "WHERE b.status = :status AND b.createdAt BETWEEN :start AND :end")
+    BigDecimal sumTotalPriceByStatusAndCreatedAtBetween(
+            @Param("status") BookingStatus status,
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end);
 }
