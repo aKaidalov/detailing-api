@@ -16,4 +16,7 @@ public interface AddOnRepository extends JpaRepository<AddOn, Integer> {
 
     @Query("SELECT a FROM AddOn a JOIN a.packages p WHERE p.id = :packageId AND a.isActive = true ORDER BY a.displayOrder")
     List<AddOn> findActiveByPackageId(@Param("packageId") Integer packageId);
+
+    @Query("SELECT a FROM AddOn a JOIN a.packages p WHERE a.id IN :ids AND p.id = :packageId")
+    List<AddOn> findAllByIdInAndPackagesId(@Param("ids") List<Integer> ids, @Param("packageId") Integer packageId);
 }

@@ -1,9 +1,9 @@
 # Detailing API - Development Roadmap
 
 ## Current Status
-**Phase:** 4 of 5 - Booking Module
-**Focus:** Booking entity, price calculation, validation
-**Last working on:** Phase 3 complete (TimeSlotTemplate, TimeSlot, Availability logic)
+**Phase:** 5 of 5 - Notifications & Polish
+**Focus:** Email notifications, analytics, final polish
+**Last working on:** Phase 4 complete (Booking module with validation, price calc, status workflow)
 
 ---
 
@@ -108,16 +108,18 @@ DELETE /api/v1/admin/time-slots/{id}
 
 ---
 
-## Phase 4: Booking Module
+## Phase 4: Booking Module ✓
 > Customer booking flow (depends on Phase 2 + 3)
 
-- [ ] Booking entity + BookingAddOn junction
-- [ ] Booking CRUD operations
-- [ ] Price calculation service
-- [ ] Booking validation (slot availability, package-vehicle compatibility)
-- [ ] Booking status workflow (PENDING -> CONFIRMED -> COMPLETED)
+- [x] Booking entity + BookingAddOn junction
+- [x] Booking CRUD operations
+- [x] Price calculation service
+- [x] Booking validation (slot availability, package-vehicle compatibility)
+- [x] Booking status workflow (PENDING -> CONFIRMED -> COMPLETED)
+- [x] GlobalExceptionHandler for proper HTTP error codes
+- [x] Integration tests (1 controller test, 16 test cases)
 
-### Phase 4 API Outline
+### Phase 4 API ✓
 ```
 # Public (client)
 POST   /api/v1/bookings
@@ -172,6 +174,7 @@ GET    /api/v1/admin/analytics/revenue?period={day|week|month}
 
 | Summary                                                                     | Next Steps |
 |-----------------------------------------------------------------------------|------------|
+| Phase 4 complete: Booking module (entity/service/controller/DTOs) + GlobalExceptionHandler + integration tests (14 files) | Phase 5 - Notifications |
 | Phase 3 complete: Scheduling modules (TimeSlotTemplate, TimeSlot) + integration tests (15 files) | Phase 4 - Booking |
 | Phase 2 complete: Catalog modules (VehicleType, Package, AddOn, DeliveryType) + integration tests (28 files)         | Phase 3 - Scheduling |
 | Phase 1 complete: User, BusinessSettings, Auth, SecurityConfig, DebugRunner | Phase 2 - Catalog |

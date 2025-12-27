@@ -16,4 +16,6 @@ public interface PackageRepository extends JpaRepository<Package, Integer> {
 
     @Query("SELECT p FROM Package p JOIN p.vehicleTypes vt WHERE vt.id = :vehicleTypeId AND p.isActive = true ORDER BY p.displayOrder")
     List<Package> findActiveByVehicleTypeId(@Param("vehicleTypeId") Integer vehicleTypeId);
+
+    boolean existsByIdAndVehicleTypesId(Integer id, Integer vehicleTypesId);
 }

@@ -158,6 +158,7 @@ CREATE TABLE time_slot (
 -- Booking: Customer reservations
 CREATE TABLE booking (
     id SERIAL PRIMARY KEY,
+    reference VARCHAR(20) NOT NULL UNIQUE,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL,
@@ -280,6 +281,7 @@ CREATE TABLE notification_log (
 -- =============================================
 
 CREATE UNIQUE INDEX idx_user_email ON "user"(email);
+CREATE INDEX idx_booking_reference ON booking(reference);
 CREATE INDEX idx_booking_status ON booking(status);
 CREATE INDEX idx_time_slot_date ON time_slot(date);
 CREATE INDEX idx_notification_log_status ON notification_log(status);
