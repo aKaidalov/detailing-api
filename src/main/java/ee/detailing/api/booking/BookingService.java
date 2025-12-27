@@ -4,6 +4,8 @@ import ee.detailing.api.addon.AddOn;
 import ee.detailing.api.addon.AddOnRepository;
 import ee.detailing.api.deliverytype.DeliveryType;
 import ee.detailing.api.deliverytype.DeliveryTypeRepository;
+import ee.detailing.api.notification.EmailService;
+import ee.detailing.api.notification.NotificationType;
 import ee.detailing.api.pkg.Package;
 import ee.detailing.api.pkg.PackageRepository;
 import ee.detailing.api.timeslot.TimeSlot;
@@ -35,6 +37,7 @@ public class BookingService {
     private final DeliveryTypeRepository deliveryTypeRepository;
     private final AddOnRepository addOnRepository;
     private final BookingMapper mapper;
+    private final EmailService emailService;
 
     private static final String ALPHANUMERIC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final SecureRandom RANDOM = new SecureRandom();
@@ -98,6 +101,10 @@ public class BookingService {
 
         // Save and return
         Booking saved = bookingRepository.save(booking);
+
+        // Send confirmation email
+        emailService.sendBookingEmailAsync(saved, NotificationType.BOOKING_CONFIRMATION);
+
         return mapper.toDto(bookingRepository.findByIdWithDetails(saved.getId()).orElseThrow());
     }
 
@@ -124,6 +131,9 @@ public class BookingService {
         releaseTimeSlot(booking);
 
         bookingRepository.save(booking);
+
+        // Send cancellation email
+        emailService.sendBookingEmailAsync(booking, NotificationType.BOOKING_CANCELLATION);
     }
 
     // === Admin Methods ===
@@ -228,6 +238,10 @@ public class BookingService {
         booking.setTotalPrice(totalPrice);
 
         Booking saved = bookingRepository.save(booking);
+
+        // Send modification email
+        emailService.sendBookingEmailAsync(saved, NotificationType.BOOKING_MODIFICATION);
+
         return mapper.toDto(bookingRepository.findByIdWithDetails(saved.getId()).orElseThrow());
     }
 
@@ -258,6 +272,9 @@ public class BookingService {
     public void deleteBooking(Integer id) {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found: " + id));
+
+        // Send cancellation email before deleting
+        emailService.sendBookingEmailAsync(booking, NotificationType.BOOKING_CANCELLATION);
 
         // Release time slot before deleting
         releaseTimeSlot(booking);
