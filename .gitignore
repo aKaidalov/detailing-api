@@ -36,3 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 .claude/**
+
+### Local configuration (sensitive data) ###
+src/main/resources/application-local.properties
