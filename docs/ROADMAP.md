@@ -3,7 +3,7 @@
 ## Current Status
 **Phase:** 5 of 5 - Notifications & Polish
 **Focus:** Email notifications, analytics, final polish
-**Last working on:** Phase 4 complete (Booking module with validation, price calc, status workflow)
+**Last working on:** Notifications + Analytics complete, remaining: error handling polish
 
 ---
 
@@ -139,12 +139,16 @@ DELETE /api/v1/admin/bookings/{id}
 ## Phase 5: Notifications & Polish
 > Email notifications and final features
 
-- [ ] Notification template management
-- [ ] NotificationLog + email sending service
-- [ ] Admin analytics endpoints
+- [x] Notification template management (CRUD for email templates)
+- [x] NotificationLog + async email sending service (Mailtrap integration)
+- [x] Auto-trigger emails on booking create/update/cancel
+- [x] Transaction-safe email sending (@TransactionalEventListener)
+- [x] Admin analytics endpoints (booking stats, revenue)
 - [ ] Error handling polish
 
-### Phase 5 API Outline
+**Note:** Cancellation/rebooking links in emails require frontend pages. See `docs/FRONTEND_REQUIREMENTS.md`.
+
+### Phase 5 API ✓
 ```
 # Admin - Notification Templates
 GET    /api/v1/admin/notifications
@@ -174,6 +178,7 @@ GET    /api/v1/admin/analytics/revenue?period={day|week|month}
 
 | Summary                                                                     | Next Steps |
 |-----------------------------------------------------------------------------|------------|
+| Phase 5 notifications + analytics: Email module (16 files), async sending with @TransactionalEventListener, analytics endpoints (5 files), Mailtrap integration | Polish, then Frontend |
 | Phase 4 complete: Booking module (entity/service/controller/DTOs) + GlobalExceptionHandler + integration tests (14 files) | Phase 5 - Notifications |
 | Phase 3 complete: Scheduling modules (TimeSlotTemplate, TimeSlot) + integration tests (15 files) | Phase 4 - Booking |
 | Phase 2 complete: Catalog modules (VehicleType, Package, AddOn, DeliveryType) + integration tests (28 files)         | Phase 3 - Scheduling |
