@@ -144,7 +144,7 @@ public class BookingService {
         List<Booking> bookings = bookingRepository.findAllWithDetails();
         // Load add-ons separately to avoid MultipleBagFetchException
         for (Booking booking : bookings) {
-            booking.getAddOns().size(); // Initialize lazy collection
+            org.hibernate.Hibernate.initialize(booking.getAddOns());
         }
         return mapper.toDtoList(bookings);
     }
@@ -300,22 +300,20 @@ public class BookingService {
         return total;
     }
 
+    private static final int REFERENCE_RANDOM_PART_LENGTH = 4;
+
     private String generateReference() {
         String datePart = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
         String reference;
         do {
-            String randomPart = generateRandomAlphanumeric(4);
+            String randomPart = RANDOM.ints(REFERENCE_RANDOM_PART_LENGTH, 0, ALPHANUMERIC.length())
+                    .mapToObj(ALPHANUMERIC::charAt)
+                    .map(Object::toString)
+                    .collect(Collectors.joining());
             reference = "BK-" + datePart + "-" + randomPart;
         } while (bookingRepository.existsByReference(reference));
 
         return reference;
-    }
-
-    private String generateRandomAlphanumeric(int length) {
-        return RANDOM.ints(length, 0, ALPHANUMERIC.length())
-                .mapToObj(ALPHANUMERIC::charAt)
-                .map(Object::toString)
-                .collect(Collectors.joining());
     }
 
     private void validateTimeSlotAvailable(TimeSlot timeSlot) {

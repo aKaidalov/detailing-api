@@ -1,9 +1,9 @@
 # Detailing API - Development Roadmap
 
 ## Current Status
-**Phase:** 5 of 5 - Notifications & Polish
-**Focus:** Email notifications, analytics, final polish
-**Last working on:** Notifications + Analytics complete, remaining: error handling polish
+**Phase:** Complete - Backend API finished
+**Focus:** Ready for frontend development
+**Last working on:** Phase 5 polish complete - all IntelliJ warnings fixed, CVE patched
 
 ---
 
@@ -136,7 +136,7 @@ DELETE /api/v1/admin/bookings/{id}
 
 ---
 
-## Phase 5: Notifications & Polish
+## Phase 5: Notifications & Polish ✓
 > Email notifications and final features
 
 - [x] Notification template management (CRUD for email templates)
@@ -144,7 +144,7 @@ DELETE /api/v1/admin/bookings/{id}
 - [x] Auto-trigger emails on booking create/update/cancel
 - [x] Transaction-safe email sending (@TransactionalEventListener)
 - [x] Admin analytics endpoints (booking stats, revenue)
-- [ ] Error handling polish
+- [x] Code polish (Hibernate.initialize, method references, CVE fix)
 
 **Note:** Cancellation/rebooking links in emails require frontend pages. See `docs/FRONTEND_REQUIREMENTS.md`.
 
@@ -178,6 +178,7 @@ GET    /api/v1/admin/analytics/revenue?period={day|week|month}
 
 | Summary                                                                     | Next Steps |
 |-----------------------------------------------------------------------------|------------|
+| Phase 5 polish: Fixed IntelliJ warnings (Hibernate.initialize, method refs, constant), upgraded springdoc 2.7.0→2.8.13 (CVE-2025-48924 fix) | Frontend |
 | Phase 5 notifications + analytics: Email module (16 files), async sending with @TransactionalEventListener, analytics endpoints (5 files), Mailtrap integration | Polish, then Frontend |
 | Phase 4 complete: Booking module (entity/service/controller/DTOs) + GlobalExceptionHandler + integration tests (14 files) | Phase 5 - Notifications |
 | Phase 3 complete: Scheduling modules (TimeSlotTemplate, TimeSlot) + integration tests (15 files) | Phase 4 - Booking |

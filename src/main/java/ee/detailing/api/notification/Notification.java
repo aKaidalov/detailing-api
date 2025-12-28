@@ -23,7 +23,7 @@ public class Notification {
     @Column(nullable = false, unique = true)
     private NotificationType type;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String subject;
 
     @Column(nullable = false, columnDefinition = "TEXT")

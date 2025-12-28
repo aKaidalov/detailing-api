@@ -44,8 +44,8 @@ public class EmailService {
         Booking booking = bookingRepository.findByIdWithDetails(bookingId)
                 .orElseThrow(() -> new IllegalStateException("Booking not found: " + bookingId));
 
-        // Initialize add-ons collection
-        booking.getAddOns().size();
+        // Force initialization of lazy-loaded add-ons collection
+        org.hibernate.Hibernate.initialize(booking.getAddOns());
 
         // Create log entry with PENDING status
         NotificationLog notificationLog = createNotificationLog(booking, notificationType);
@@ -102,7 +102,7 @@ public class EmailService {
 
         String subServices = booking.getAddOns().isEmpty() ? "None" :
                 booking.getAddOns().stream()
-                        .map(addOn -> addOn.getName())
+                        .map(ee.detailing.api.addon.AddOn::getName)
                         .collect(Collectors.joining(", "));
 
         String deliveryOption = booking.getDeliveryType().getName();
