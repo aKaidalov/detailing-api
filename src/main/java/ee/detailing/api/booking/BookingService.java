@@ -4,7 +4,7 @@ import ee.detailing.api.addon.AddOn;
 import ee.detailing.api.addon.AddOnRepository;
 import ee.detailing.api.deliverytype.DeliveryType;
 import ee.detailing.api.deliverytype.DeliveryTypeRepository;
-import ee.detailing.api.notification.EmailService;
+import ee.detailing.api.notification.BookingEmailEvent;
 import ee.detailing.api.notification.NotificationType;
 import ee.detailing.api.pkg.Package;
 import ee.detailing.api.pkg.PackageRepository;
@@ -14,6 +14,7 @@ import ee.detailing.api.timeslot.TimeSlotStatus;
 import ee.detailing.api.vehicletype.VehicleType;
 import ee.detailing.api.vehicletype.VehicleTypeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +38,7 @@ public class BookingService {
     private final DeliveryTypeRepository deliveryTypeRepository;
     private final AddOnRepository addOnRepository;
     private final BookingMapper mapper;
-    private final EmailService emailService;
+    private final ApplicationEventPublisher eventPublisher;
 
     private static final String ALPHANUMERIC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final SecureRandom RANDOM = new SecureRandom();
@@ -102,8 +103,8 @@ public class BookingService {
         // Save and return
         Booking saved = bookingRepository.save(booking);
 
-        // Send confirmation email
-        emailService.sendBookingEmailAsync(saved, NotificationType.BOOKING_CONFIRMATION);
+        // Publish event - email will be sent after transaction commits
+        eventPublisher.publishEvent(new BookingEmailEvent(this, saved.getId(), NotificationType.BOOKING_CONFIRMATION));
 
         return mapper.toDto(bookingRepository.findByIdWithDetails(saved.getId()).orElseThrow());
     }
@@ -130,10 +131,10 @@ public class BookingService {
         // Release time slot
         releaseTimeSlot(booking);
 
-        bookingRepository.save(booking);
+        Booking saved = bookingRepository.save(booking);
 
-        // Send cancellation email
-        emailService.sendBookingEmailAsync(booking, NotificationType.BOOKING_CANCELLATION);
+        // Publish event - email will be sent after transaction commits
+        eventPublisher.publishEvent(new BookingEmailEvent(this, saved.getId(), NotificationType.BOOKING_CANCELLATION));
     }
 
     // === Admin Methods ===
@@ -239,8 +240,8 @@ public class BookingService {
 
         Booking saved = bookingRepository.save(booking);
 
-        // Send modification email
-        emailService.sendBookingEmailAsync(saved, NotificationType.BOOKING_MODIFICATION);
+        // Publish event - email will be sent after transaction commits
+        eventPublisher.publishEvent(new BookingEmailEvent(this, saved.getId(), NotificationType.BOOKING_MODIFICATION));
 
         return mapper.toDto(bookingRepository.findByIdWithDetails(saved.getId()).orElseThrow());
     }
@@ -273,8 +274,8 @@ public class BookingService {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found: " + id));
 
-        // Send cancellation email before deleting
-        emailService.sendBookingEmailAsync(booking, NotificationType.BOOKING_CANCELLATION);
+        // Note: No email notification on hard delete (booking won't exist after transaction)
+        // Use cancel status change instead if customer notification is needed
 
         // Release time slot before deleting
         releaseTimeSlot(booking);

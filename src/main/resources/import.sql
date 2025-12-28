@@ -175,3 +175,36 @@ INSERT INTO package_add_on (package_id, add_on_id) VALUES (3, 7);  -- Leather se
 INSERT INTO package_add_on (package_id, add_on_id) VALUES (3, 8);  -- Odor removal with ozone
 INSERT INTO package_add_on (package_id, add_on_id) VALUES (3, 9);  -- Leather ceramic coating
 INSERT INTO package_add_on (package_id, add_on_id) VALUES (3, 10); -- Extra dirty vehicle surcharge
+
+-- =============================================
+-- TIME SLOTS (for testing)
+-- =============================================
+-- Using dates in January 2025
+INSERT INTO time_slot (date, status, time_slot_template_id, created_at, updated_at)
+VALUES
+    ('2025-01-15', 'BOOKED', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=1, 09:00-11:00, booked
+    ('2025-01-15', 'AVAILABLE', 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), -- id=2, 11:00-13:00, available
+    ('2025-01-16', 'BOOKED', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=3, 09:00-11:00, booked
+    ('2025-01-16', 'BOOKED', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=4, 14:00-16:00, booked
+    ('2025-01-17', 'AVAILABLE', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP); -- id=5, 09:00-11:00, available
+
+-- =============================================
+-- BOOKINGS (for testing)
+-- =============================================
+-- Booking 1: Car + Full Wash + Self delivery = 20 + 30 + 0 = 50
+INSERT INTO booking (reference, first_name, last_name, email, phone, vehicle_reg_number, total_price, notes, address, status, vehicle_type_id, package_id, time_slot_id, delivery_type_id, created_at, updated_at)
+VALUES ('DET-20250115-001', 'John', 'Smith', 'john.smith@example.com', '+372 5551 1111', '123ABC', 50.00, 'Please wash carefully', NULL, 'CONFIRMED', 1, 1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- Booking 2: Van + Exterior Wash + Pickup = 40 + 10 + 15 = 65
+INSERT INTO booking (reference, first_name, last_name, email, phone, vehicle_reg_number, total_price, notes, address, status, vehicle_type_id, package_id, time_slot_id, delivery_type_id, created_at, updated_at)
+VALUES ('DET-20250116-001', 'Maria', 'Johnson', 'maria.j@example.com', '+372 5552 2222', '456DEF', 65.00, NULL, 'Tartu mnt 50, Tallinn', 'PENDING', 2, 2, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- Booking 3: Car + Interior Cleaning + Self delivery + Add-ons (Textile seat cleaning + Odor removal) = 20 + 10 + 0 + 50 + 35 = 115
+INSERT INTO booking (reference, first_name, last_name, email, phone, vehicle_reg_number, total_price, notes, address, status, vehicle_type_id, package_id, time_slot_id, delivery_type_id, created_at, updated_at)
+VALUES ('DET-20250116-002', 'Peeter', 'Tamm', 'peeter.tamm@example.com', '+372 5553 3333', '789GHI', 115.00, 'Dog was in the car, needs deep cleaning', NULL, 'CONFIRMED', 1, 3, 4, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- =============================================
+-- BOOKING ADD-ONS (for booking 3)
+-- =============================================
+INSERT INTO booking_add_on (booking_id, add_on_id) VALUES (3, 6);  -- Textile seat cleaning
+INSERT INTO booking_add_on (booking_id, add_on_id) VALUES (3, 8);  -- Odor removal with ozone

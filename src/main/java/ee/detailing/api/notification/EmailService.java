@@ -1,6 +1,7 @@
 package ee.detailing.api.notification;
 
 import ee.detailing.api.booking.Booking;
+import ee.detailing.api.booking.BookingRepository;
 import ee.detailing.api.businesssettings.BusinessSettings;
 import ee.detailing.api.businesssettings.BusinessSettingsRepository;
 import jakarta.mail.MessagingException;
@@ -26,13 +27,25 @@ public class EmailService {
     private final NotificationRepository notificationRepository;
     private final NotificationLogRepository notificationLogRepository;
     private final BusinessSettingsRepository businessSettingsRepository;
+    private final BookingRepository bookingRepository;
 
     private static final String BASE_URL = "http://localhost:8080";
 
+    /**
+     * Sends booking email asynchronously.
+     * Accepts booking ID to reload the entity with all relationships in the async thread.
+     */
     @Async("emailTaskExecutor")
     @Transactional
-    public void sendBookingEmailAsync(Booking booking, NotificationType notificationType) {
-        log.info("Starting async email send for booking {} with type {}", booking.getReference(), notificationType);
+    public void sendBookingEmailAsync(Integer bookingId, NotificationType notificationType) {
+        log.info("Starting async email send for booking ID {} with type {}", bookingId, notificationType);
+
+        // Reload booking with all relationships in this transaction
+        Booking booking = bookingRepository.findByIdWithDetails(bookingId)
+                .orElseThrow(() -> new IllegalStateException("Booking not found: " + bookingId));
+
+        // Initialize add-ons collection
+        booking.getAddOns().size();
 
         // Create log entry with PENDING status
         NotificationLog notificationLog = createNotificationLog(booking, notificationType);
