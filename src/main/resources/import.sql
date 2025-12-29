@@ -87,7 +87,7 @@ Total Price: {totalPrice}
 
 Location: {businessAddress}
 
-To cancel your booking, click here: {cancellationLink}
+To cancel your booking, <a href="{cancellationLink}">click here</a>.
 
 Best regards,
 {businessName}
@@ -125,7 +125,7 @@ Booking Reference: #{bookingRef}
 Original Date: {date}
 Original Time: {time}
 
-To make a new booking, visit: {rebookingLink}
+To make a new booking, <a href="{rebookingLink}">click here</a>.
 
 Best regards,
 {businessName}

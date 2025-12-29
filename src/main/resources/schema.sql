@@ -170,7 +170,7 @@ CREATE TABLE booking (
     status booking_status NOT NULL DEFAULT 'PENDING',
     vehicle_type_id INT,
     package_id INT,
-    time_slot_id INT UNIQUE,
+    time_slot_id INT,
     delivery_type_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -285,3 +285,9 @@ CREATE INDEX idx_booking_reference ON booking(reference);
 CREATE INDEX idx_booking_status ON booking(status);
 CREATE INDEX idx_time_slot_date ON time_slot(date);
 CREATE INDEX idx_notification_log_status ON notification_log(status);
+
+-- Partial unique index: only one active booking per time slot
+-- Allows cancelled/completed bookings to keep time_slot reference for email history
+CREATE UNIQUE INDEX idx_booking_time_slot_active ON booking (time_slot_id)
+    WHERE time_slot_id IS NOT NULL
+    AND status NOT IN ('CANCELLED_BY_CUSTOMER', 'CANCELLED_BY_ADMIN', 'COMPLETED');

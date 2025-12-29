@@ -29,7 +29,8 @@ public class EmailService {
     private final BusinessSettingsRepository businessSettingsRepository;
     private final BookingRepository bookingRepository;
 
-    private static final String BASE_URL = "http://localhost:8080";
+    private static final String BACKEND_URL = "http://localhost:8080";
+    private static final String FRONTEND_URL = "http://localhost:3000";
 
     /**
      * Sends booking email asynchronously.
@@ -123,8 +124,8 @@ public class EmailService {
                 .businessName(settings.getName())
                 .businessPhone(settings.getPhone())
                 .businessAddress(settings.getAddress())
-                .cancellationLink(BASE_URL + "/api/v1/bookings/" + booking.getReference())
-                .rebookingLink(BASE_URL)
+                .cancellationLink(FRONTEND_URL + "/cancel/" + booking.getReference())
+                .rebookingLink(FRONTEND_URL + "/booking")
                 .build();
     }
 
