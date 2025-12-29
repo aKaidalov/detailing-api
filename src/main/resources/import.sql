@@ -182,11 +182,11 @@ INSERT INTO package_add_on (package_id, add_on_id) VALUES (3, 10); -- Extra dirt
 -- Using dates in January 2025
 INSERT INTO time_slot (date, status, time_slot_template_id, created_at, updated_at)
 VALUES
-    ('2025-01-15', 'BOOKED', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=1, 09:00-11:00, booked
-    ('2025-01-15', 'AVAILABLE', 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), -- id=2, 11:00-13:00, available
-    ('2025-01-16', 'BOOKED', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=3, 09:00-11:00, booked
-    ('2025-01-16', 'BOOKED', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=4, 14:00-16:00, booked
-    ('2025-01-17', 'AVAILABLE', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP); -- id=5, 09:00-11:00, available
+    ('2026-01-15', 'BOOKED', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=1, 09:00-11:00, booked
+    ('2026-01-15', 'AVAILABLE', 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), -- id=2, 11:00-13:00, available
+    ('2026-01-16', 'BOOKED', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=3, 09:00-11:00, booked
+    ('2026-01-16', 'BOOKED', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=4, 14:00-16:00, booked
+    ('2026-01-17', 'AVAILABLE', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP); -- id=5, 09:00-11:00, available
 
 -- =============================================
 -- BOOKINGS (for testing)
