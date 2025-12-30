@@ -98,6 +98,7 @@ erDiagram
 
     booking {
         serial id PK
+        varchar_20 reference "UNIQUE"
         varchar_100 first_name
         varchar_100 last_name
         varchar_255 email
