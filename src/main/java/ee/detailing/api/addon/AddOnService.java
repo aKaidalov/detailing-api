@@ -1,9 +1,12 @@
 package ee.detailing.api.addon;
 
+import ee.detailing.api.pkg.Package;
+import ee.detailing.api.pkg.PackageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -12,6 +15,7 @@ public class AddOnService {
 
     private final AddOnRepository repository;
     private final AddOnMapper mapper;
+    private final PackageRepository packageRepository;
 
     @Transactional(readOnly = true)
     public List<AddOnDto> getAddOnsForPackage(Integer packageId) {
@@ -33,6 +37,7 @@ public class AddOnService {
     @Transactional
     public AddOnDto createAddOn(AddOnDto dto) {
         AddOn entity = mapper.toEntity(dto);
+        updatePackages(entity, dto.getPackageIds());
         return mapper.toDto(repository.save(entity));
     }
 
@@ -41,6 +46,7 @@ public class AddOnService {
         AddOn entity = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Add-on not found: " + id));
         mapper.updateEntityFromDto(dto, entity);
+        updatePackages(entity, dto.getPackageIds());
         return mapper.toDto(repository.save(entity));
     }
 
@@ -50,5 +56,12 @@ public class AddOnService {
             throw new IllegalArgumentException("Add-on not found: " + id);
         }
         repository.deleteById(id);
+    }
+
+    private void updatePackages(AddOn entity, List<Integer> packageIds) {
+        if (packageIds != null) {
+            List<Package> packages = packageRepository.findAllById(packageIds);
+            entity.setPackages(new HashSet<>(packages));
+        }
     }
 }

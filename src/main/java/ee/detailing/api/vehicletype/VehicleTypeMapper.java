@@ -1,6 +1,7 @@
 package ee.detailing.api.vehicletype;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import java.util.List;
@@ -14,5 +15,6 @@ public interface VehicleTypeMapper {
 
     VehicleType toEntity(VehicleTypeDto dto);
 
+    @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(VehicleTypeDto dto, @MappingTarget VehicleType entity);
 }

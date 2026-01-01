@@ -1,9 +1,12 @@
 package ee.detailing.api.pkg;
 
+import ee.detailing.api.vehicletype.VehicleType;
+import ee.detailing.api.vehicletype.VehicleTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -12,6 +15,7 @@ public class PackageService {
 
     private final PackageRepository repository;
     private final PackageMapper mapper;
+    private final VehicleTypeRepository vehicleTypeRepository;
 
     @Transactional(readOnly = true)
     public List<PackageDto> getPackagesForVehicleType(Integer vehicleTypeId) {
@@ -33,6 +37,7 @@ public class PackageService {
     @Transactional
     public PackageDto createPackage(PackageDto dto) {
         Package entity = mapper.toEntity(dto);
+        updateVehicleTypes(entity, dto.getVehicleTypeIds());
         return mapper.toDto(repository.save(entity));
     }
 
@@ -41,6 +46,7 @@ public class PackageService {
         Package entity = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Package not found: " + id));
         mapper.updateEntityFromDto(dto, entity);
+        updateVehicleTypes(entity, dto.getVehicleTypeIds());
         return mapper.toDto(repository.save(entity));
     }
 
@@ -50,5 +56,12 @@ public class PackageService {
             throw new IllegalArgumentException("Package not found: " + id);
         }
         repository.deleteById(id);
+    }
+
+    private void updateVehicleTypes(Package entity, List<Integer> vehicleTypeIds) {
+        if (vehicleTypeIds != null) {
+            List<VehicleType> vehicleTypes = vehicleTypeRepository.findAllById(vehicleTypeIds);
+            entity.setVehicleTypes(new HashSet<>(vehicleTypes));
+        }
     }
 }
