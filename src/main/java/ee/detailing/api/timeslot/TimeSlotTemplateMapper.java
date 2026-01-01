@@ -1,6 +1,7 @@
 package ee.detailing.api.timeslot;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import java.util.List;
@@ -14,5 +15,6 @@ public interface TimeSlotTemplateMapper {
 
     TimeSlotTemplate toEntity(TimeSlotTemplateDto dto);
 
+    @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(TimeSlotTemplateDto dto, @MappingTarget TimeSlotTemplate entity);
 }

@@ -19,6 +19,7 @@ public interface TimeSlotMapper {
     @Mapping(target = "timeSlotTemplate", ignore = true)
     TimeSlot toEntity(TimeSlotDto dto);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "timeSlotTemplate", ignore = true)
     void updateEntityFromDto(TimeSlotDto dto, @MappingTarget TimeSlot entity);
 }
