@@ -144,6 +144,8 @@ DELETE /api/v1/admin/bookings/{id}
 - [x] Auto-trigger emails on booking create/update/cancel
 - [x] Transaction-safe email sending (@TransactionalEventListener)
 - [x] Admin analytics endpoints (booking stats, revenue)
+- [x] Admin session validation endpoint (GET /admin/me)
+- [x] Admin password change endpoint (PUT /admin/password)
 - [x] Code polish (Hibernate.initialize, method references, CVE fix)
 
 **Note:** Cancellation/rebooking links in emails require frontend pages. See `docs/FRONTEND_REQUIREMENTS.md`.
@@ -157,6 +159,10 @@ PUT    /api/v1/admin/notifications/{type}
 # Admin - Analytics
 GET    /api/v1/admin/analytics/bookings?period={day|week|month}
 GET    /api/v1/admin/analytics/revenue?period={day|week|month}
+
+# Admin - Session & Profile
+GET    /api/v1/admin/me
+PUT    /api/v1/admin/password
 ```
 
 ---
@@ -178,6 +184,8 @@ GET    /api/v1/admin/analytics/revenue?period={day|week|month}
 
 | Summary                                                                     | Next Steps |
 |-----------------------------------------------------------------------------|------------|
+| Added PUT /admin/password endpoint for admin password changes | Frontend |
+| Added GET /admin/me endpoint for session validation | Frontend |
 | Phase 5 polish: Fixed IntelliJ warnings (Hibernate.initialize, method refs, constant), upgraded springdoc 2.7.0→2.8.13 (CVE-2025-48924 fix) | Frontend |
 | Phase 5 notifications + analytics: Email module (16 files), async sending with @TransactionalEventListener, analytics endpoints (5 files), Mailtrap integration | Polish, then Frontend |
 | Phase 4 complete: Booking module (entity/service/controller/DTOs) + GlobalExceptionHandler + integration tests (14 files) | Phase 5 - Notifications |
