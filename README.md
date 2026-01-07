@@ -1,19 +1,60 @@
-## 1. Build Check
+# Detailing API
 
-`./gradlew clean build`
-This compiles the code and runs tests. If successful, your code compiles without errors.
+Car Detailing Booking System – Spring Boot application for managing a small detailing company's workflow. Clients can book services online, while admins manage time slots, vehicles, service items, and booking statuses.
 
-## 2. Run Tests
+## Tech Stack
 
-`./gradlew test`
-Executes all unit and integration tests to verify business logic.
+- Java 21
+- Spring Boot 3.5
+- PostgreSQL
+- Gradle
 
-## 3. Start the Application
+## Features
 
-### Start PostgreSQL
-`docker-compose up -d`
-`curl http://localhost:8080/actuator/health`
+- Service catalog management
+- Time slot scheduling
+- Online booking system
+- Vehicle & client management
+- Admin dashboard API
 
-### Run the API
-`./gradlew bootRun`
-The API should start on http://localhost:8080
+## Getting Started
+
+### Prerequisites
+
+- Java 21
+- Docker (for PostgreSQL)
+
+### 1. Build
+
+```bash
+./gradlew clean build
+```
+
+### 2. Run Tests
+
+```bash
+./gradlew test
+```
+
+### 3. Start the Application
+
+Start PostgreSQL:
+```bash
+docker-compose up -d
+```
+
+Run the API:
+```bash
+./gradlew bootRun
+```
+
+The API will be available at http://localhost:8080
+
+Health check:
+```bash
+curl http://localhost:8080/actuator/health
+```
+
+## Related
+
+- [detailing-web](https://github.com/akaidalov/detailing-web) — React frontend
