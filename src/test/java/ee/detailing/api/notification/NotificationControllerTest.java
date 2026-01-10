@@ -38,7 +38,7 @@ class NotificationControllerTest {
         NotificationUpdateRequest request = new NotificationUpdateRequest();
         request.setSubject("New Subject");
 
-        mockMvc.perform(put("/api/v1/admin/notifications/BOOKING_CONFIRMATION")
+        mockMvc.perform(put("/api/v1/admin/notifications/BOOKING_CREATED")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isForbidden());
@@ -51,11 +51,14 @@ class NotificationControllerTest {
     void getAllNotifications_returnsAllTemplates() throws Exception {
         mockMvc.perform(get("/api/v1/admin/notifications"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$", hasSize(6)))
                 .andExpect(jsonPath("$[*].type", containsInAnyOrder(
-                        "BOOKING_CONFIRMATION",
-                        "BOOKING_MODIFICATION",
-                        "BOOKING_CANCELLATION")));
+                        "BOOKING_CREATED",
+                        "BOOKING_CONFIRMED",
+                        "BOOKING_MODIFIED",
+                        "BOOKING_COMPLETED",
+                        "BOOKING_CANCELLED_BY_CUSTOMER",
+                        "BOOKING_CANCELLED_BY_ADMIN")));
     }
 
     @Test
@@ -78,12 +81,12 @@ class NotificationControllerTest {
         NotificationUpdateRequest request = new NotificationUpdateRequest();
         request.setSubject("Updated Subject - #{bookingRef}");
 
-        mockMvc.perform(put("/api/v1/admin/notifications/BOOKING_CONFIRMATION")
+        mockMvc.perform(put("/api/v1/admin/notifications/BOOKING_CREATED")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.subject", is("Updated Subject - #{bookingRef}")))
-                .andExpect(jsonPath("$.type", is("BOOKING_CONFIRMATION")));
+                .andExpect(jsonPath("$.type", is("BOOKING_CREATED")));
     }
 
     @Test
@@ -92,7 +95,7 @@ class NotificationControllerTest {
         NotificationUpdateRequest request = new NotificationUpdateRequest();
         request.setBody("This is the new email body for {clientName}");
 
-        mockMvc.perform(put("/api/v1/admin/notifications/BOOKING_MODIFICATION")
+        mockMvc.perform(put("/api/v1/admin/notifications/BOOKING_MODIFIED")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -105,7 +108,7 @@ class NotificationControllerTest {
         NotificationUpdateRequest request = new NotificationUpdateRequest();
         request.setIsActive(false);
 
-        mockMvc.perform(put("/api/v1/admin/notifications/BOOKING_CANCELLATION")
+        mockMvc.perform(put("/api/v1/admin/notifications/BOOKING_CANCELLED_BY_CUSTOMER")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -120,7 +123,7 @@ class NotificationControllerTest {
         request.setBody("Complete Update Body");
         request.setIsActive(false);
 
-        mockMvc.perform(put("/api/v1/admin/notifications/BOOKING_CONFIRMATION")
+        mockMvc.perform(put("/api/v1/admin/notifications/BOOKING_CREATED")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())

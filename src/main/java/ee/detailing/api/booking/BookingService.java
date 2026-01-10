@@ -104,7 +104,7 @@ public class BookingService {
         Booking saved = bookingRepository.save(booking);
 
         // Publish event - email will be sent after transaction commits
-        eventPublisher.publishEvent(new BookingEmailEvent(this, saved.getId(), NotificationType.BOOKING_CONFIRMATION));
+        eventPublisher.publishEvent(new BookingEmailEvent(this, saved.getId(), NotificationType.BOOKING_CREATED));
 
         return mapper.toDto(bookingRepository.findByIdWithDetails(saved.getId()).orElseThrow());
     }
@@ -134,7 +134,7 @@ public class BookingService {
         Booking saved = bookingRepository.save(booking);
 
         // Publish event - email will be sent after transaction commits
-        eventPublisher.publishEvent(new BookingEmailEvent(this, saved.getId(), NotificationType.BOOKING_CANCELLATION));
+        eventPublisher.publishEvent(new BookingEmailEvent(this, saved.getId(), NotificationType.BOOKING_CANCELLED_BY_CUSTOMER));
     }
 
     // === Admin Methods ===
@@ -241,7 +241,7 @@ public class BookingService {
         Booking saved = bookingRepository.save(booking);
 
         // Publish event - email will be sent after transaction commits
-        eventPublisher.publishEvent(new BookingEmailEvent(this, saved.getId(), NotificationType.BOOKING_MODIFICATION));
+        eventPublisher.publishEvent(new BookingEmailEvent(this, saved.getId(), NotificationType.BOOKING_MODIFIED));
 
         return mapper.toDto(bookingRepository.findByIdWithDetails(saved.getId()).orElseThrow());
     }
@@ -266,7 +266,21 @@ public class BookingService {
             releaseTimeSlot(booking);
         }
 
-        return mapper.toDto(bookingRepository.save(booking));
+        Booking saved = bookingRepository.save(booking);
+
+        // Publish notification event based on new status
+        NotificationType notificationType = switch (newStatus) {
+            case CONFIRMED -> NotificationType.BOOKING_CONFIRMED;
+            case COMPLETED -> NotificationType.BOOKING_COMPLETED;
+            case CANCELLED_BY_ADMIN -> NotificationType.BOOKING_CANCELLED_BY_ADMIN;
+            default -> null; // PENDING and CANCELLED_BY_CUSTOMER don't apply here
+        };
+
+        if (notificationType != null) {
+            eventPublisher.publishEvent(new BookingEmailEvent(this, saved.getId(), notificationType));
+        }
+
+        return mapper.toDto(saved);
     }
 
     @Transactional

@@ -71,15 +71,17 @@ VALUES
 -- =============================================
 INSERT INTO notification (type, subject, body, is_active)
 VALUES
-    ('BOOKING_CONFIRMATION',
-     'Booking Confirmation - #{bookingRef}',
+    ('BOOKING_CREATED',
+     'Booking Received - #{bookingRef}',
      'Dear {clientName},
 
-Thank you for your booking!
+Thank you for your booking request!
+
+Your booking is currently <strong>pending confirmation</strong>. We will review it and confirm shortly.
 
 Booking Reference: #{bookingRef}
-Date: {date}
-Time: {time}
+Requested Date: {date}
+Requested Time: {time}
 Services: {services}
 Add-ons: {subServices}
 Delivery: {deliveryOption}
@@ -94,7 +96,32 @@ Best regards,
 {businessPhone}',
      TRUE),
 
-    ('BOOKING_MODIFICATION',
+    ('BOOKING_CONFIRMED',
+     'Booking Confirmed - #{bookingRef}',
+     'Dear {clientName},
+
+Great news! Your booking has been <strong>confirmed</strong>.
+
+Booking Reference: #{bookingRef}
+Date: {date}
+Time: {time}
+Services: {services}
+Add-ons: {subServices}
+Delivery: {deliveryOption}
+Total Price: {totalPrice}
+
+Location: {businessAddress}
+
+We look forward to seeing you!
+
+To cancel your booking, <a href="{cancellationLink}">click here</a>.
+
+Best regards,
+{businessName}
+{businessPhone}',
+     TRUE),
+
+    ('BOOKING_MODIFIED',
      'Booking Updated - #{bookingRef}',
      'Dear {clientName},
 
@@ -110,20 +137,62 @@ New Total Price: {totalPrice}
 
 Location: {businessAddress}
 
+To cancel your booking, <a href="{cancellationLink}">click here</a>.
+
 Best regards,
 {businessName}
 {businessPhone}',
      TRUE),
 
-    ('BOOKING_CANCELLATION',
+    ('BOOKING_COMPLETED',
+     'Thank You - #{bookingRef}',
+     'Dear {clientName},
+
+Thank you for visiting {businessName}!
+
+Your service has been completed.
+
+Booking Reference: #{bookingRef}
+Date: {date}
+Services: {services}
+Add-ons: {subServices}
+Total Price: {totalPrice}
+
+We hope you are satisfied with our service. To book again, <a href="{rebookingLink}">click here</a>.
+
+Best regards,
+{businessName}
+{businessPhone}',
+     TRUE),
+
+    ('BOOKING_CANCELLED_BY_CUSTOMER',
      'Booking Cancelled - #{bookingRef}',
      'Dear {clientName},
 
-Your booking has been cancelled.
+Your booking has been cancelled as requested.
 
 Booking Reference: #{bookingRef}
 Original Date: {date}
 Original Time: {time}
+
+To make a new booking, <a href="{rebookingLink}">click here</a>.
+
+Best regards,
+{businessName}
+{businessPhone}',
+     TRUE),
+
+    ('BOOKING_CANCELLED_BY_ADMIN',
+     'Booking Cancelled - #{bookingRef}',
+     'Dear {clientName},
+
+Unfortunately, your booking has been cancelled by {businessName}.
+
+Booking Reference: #{bookingRef}
+Original Date: {date}
+Original Time: {time}
+
+We apologize for any inconvenience. Please contact us if you have any questions.
 
 To make a new booking, <a href="{rebookingLink}">click here</a>.
 
