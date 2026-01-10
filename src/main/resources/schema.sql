@@ -124,6 +124,7 @@ CREATE TABLE add_on (
 CREATE TABLE delivery_type (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
+    icon VARCHAR(10) NOT NULL,
     price DECIMAL(10,2) NOT NULL DEFAULT 0,
     requires_address BOOLEAN NOT NULL DEFAULT FALSE,
     is_active BOOLEAN NOT NULL DEFAULT TRUE

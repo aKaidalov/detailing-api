@@ -21,6 +21,9 @@ public class DeliveryType {
     @Column(nullable = false, length = 50)
     private String name;
 
+    @Column(nullable = false, length = 10)
+    private String icon;
+
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price = BigDecimal.ZERO;
 

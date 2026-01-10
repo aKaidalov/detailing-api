@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public class DeliveryTypeDto {
     private Integer id;
     private String name;
+    private String icon;
     private BigDecimal price;
     private Boolean requiresAddress;
     private Boolean isActive;

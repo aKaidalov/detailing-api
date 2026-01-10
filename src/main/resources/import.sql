@@ -51,10 +51,10 @@ VALUES
 -- =============================================
 -- DELIVERY TYPES
 -- =============================================
-INSERT INTO delivery_type (name, price, requires_address, is_active)
+INSERT INTO delivery_type (name, icon, price, requires_address, is_active)
 VALUES
-    ('I bring it myself', 0.00, FALSE, TRUE),
-    ('We pick up the car', 15.00, TRUE, TRUE);
+    ('I bring it myself', '👤', 0.00, FALSE, TRUE),
+    ('We pick up the car', '🚚', 15.00, TRUE, TRUE);
 
 -- =============================================
 -- TIME SLOT TEMPLATES

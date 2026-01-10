@@ -60,6 +60,7 @@ class DeliveryTypeControllerTest {
     void createDeliveryType_createsAndReturns() throws Exception {
         DeliveryTypeDto dto = new DeliveryTypeDto();
         dto.setName("Express Pickup");
+        dto.setIcon("🚀");
         dto.setPrice(new BigDecimal("25.00"));
         dto.setRequiresAddress(true);
         dto.setIsActive(true);
@@ -69,7 +70,8 @@ class DeliveryTypeControllerTest {
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", notNullValue()))
-                .andExpect(jsonPath("$.name", is("Express Pickup")));
+                .andExpect(jsonPath("$.name", is("Express Pickup")))
+                .andExpect(jsonPath("$.icon", is("🚀")));
     }
 
     @Test
@@ -77,6 +79,7 @@ class DeliveryTypeControllerTest {
     void updateDeliveryType_updatesAndReturns() throws Exception {
         DeliveryTypeDto dto = new DeliveryTypeDto();
         dto.setName("Updated Delivery");
+        dto.setIcon("👤");
         dto.setPrice(new BigDecimal("20.00"));
         dto.setRequiresAddress(false);
         dto.setIsActive(true);
@@ -94,6 +97,7 @@ class DeliveryTypeControllerTest {
         // First create one to delete
         DeliveryTypeDto dto = new DeliveryTypeDto();
         dto.setName("ToDelete");
+        dto.setIcon("🗑️");
         dto.setPrice(new BigDecimal("0.00"));
         dto.setRequiresAddress(false);
         dto.setIsActive(true);
@@ -104,7 +108,7 @@ class DeliveryTypeControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        Integer id = objectMapper.readTree(response).get("id").asInt();
+        int id = objectMapper.readTree(response).get("id").asInt();
 
         mockMvc.perform(delete("/api/v1/admin/delivery-types/" + id))
                 .andExpect(status().isNoContent());
