@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public class VehicleTypeDto {
     private Integer id;
     private String name;
+    private String icon;
     private BigDecimal basePrice;
     private String description;
     private Boolean isDeliverable;

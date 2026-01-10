@@ -18,10 +18,10 @@ VALUES ('Detailing Tallinn', '+372 5555 1234', 'info@detailing.ee', 'Pärnu mnt 
 -- =============================================
 -- VEHICLE TYPES
 -- =============================================
-INSERT INTO vehicle_type (name, base_price, description, is_deliverable, is_active, display_order, created_at, updated_at)
+INSERT INTO vehicle_type (name, icon, base_price, description, is_deliverable, is_active, display_order, created_at, updated_at)
 VALUES
-    ('Car', 20.00, 'Standard passenger car', TRUE, TRUE, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Van', 40.00, 'Van or minibus', TRUE, TRUE, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    ('Car', '🚗', 20.00, 'Standard passenger car', TRUE, TRUE, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Van', '🚐', 40.00, 'Van or minibus', TRUE, TRUE, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- =============================================
 -- PACKAGES

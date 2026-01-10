@@ -60,6 +60,7 @@ class VehicleTypeControllerTest {
     void createVehicleType_createsAndReturns() throws Exception {
         VehicleTypeDto dto = new VehicleTypeDto();
         dto.setName("SUV");
+        dto.setIcon("🚙");
         dto.setBasePrice(new BigDecimal("30.00"));
         dto.setDescription("Sport utility vehicle");
         dto.setIsDeliverable(true);
@@ -72,6 +73,7 @@ class VehicleTypeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.name", is("SUV")))
+                .andExpect(jsonPath("$.icon", is("🚙")))
                 .andExpect(jsonPath("$.basePrice", is(30.00)));
     }
 
@@ -80,6 +82,7 @@ class VehicleTypeControllerTest {
     void updateVehicleType_updatesAndReturns() throws Exception {
         VehicleTypeDto dto = new VehicleTypeDto();
         dto.setName("Updated Car");
+        dto.setIcon("🚗");
         dto.setBasePrice(new BigDecimal("25.00"));
         dto.setDescription("Updated description");
         dto.setIsDeliverable(true);
@@ -99,6 +102,7 @@ class VehicleTypeControllerTest {
         // First create one to delete
         VehicleTypeDto dto = new VehicleTypeDto();
         dto.setName("ToDelete");
+        dto.setIcon("🗑️");
         dto.setBasePrice(new BigDecimal("10.00"));
         dto.setIsDeliverable(true);
         dto.setIsActive(true);

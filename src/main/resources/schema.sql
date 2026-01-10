@@ -86,6 +86,7 @@ CREATE TABLE business_settings (
 CREATE TABLE vehicle_type (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
+    icon VARCHAR(10) NOT NULL,
     base_price DECIMAL(10,2) NOT NULL,
     description TEXT,
     is_deliverable BOOLEAN NOT NULL DEFAULT TRUE,
