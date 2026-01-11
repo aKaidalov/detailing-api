@@ -277,3 +277,101 @@ VALUES ('DET-20250116-002', 'Peeter', 'Tamm', 'peeter.tamm@example.com', '+372 5
 -- =============================================
 INSERT INTO booking_add_on (booking_id, add_on_id) VALUES (3, 6);  -- Textile seat cleaning
 INSERT INTO booking_add_on (booking_id, add_on_id) VALUES (3, 8);  -- Odor removal with ozone
+
+-- =============================================
+-- ADDITIONAL TIME SLOTS (Jan 20-23, 2026 for testing)
+-- =============================================
+-- Jan 20
+INSERT INTO time_slot (date, status, time_slot_template_id, created_at, updated_at)
+VALUES
+    ('2026-01-20', 'BOOKED', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=6, 09:00-11:00
+    ('2026-01-20', 'BOOKED', 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=7, 11:00-13:00
+    ('2026-01-20', 'BOOKED', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=8, 14:00-16:00
+    ('2026-01-20', 'AVAILABLE', 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP); -- id=9, 16:00-18:00
+
+-- Jan 21
+INSERT INTO time_slot (date, status, time_slot_template_id, created_at, updated_at)
+VALUES
+    ('2026-01-21', 'BOOKED', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=10, 09:00-11:00
+    ('2026-01-21', 'BOOKED', 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=11, 11:00-13:00
+    ('2026-01-21', 'BOOKED', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=12, 14:00-16:00
+    ('2026-01-21', 'BOOKED', 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);    -- id=13, 16:00-18:00
+
+-- Jan 22
+INSERT INTO time_slot (date, status, time_slot_template_id, created_at, updated_at)
+VALUES
+    ('2026-01-22', 'BOOKED', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=14, 09:00-11:00
+    ('2026-01-22', 'BOOKED', 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=15, 11:00-13:00
+    ('2026-01-22', 'AVAILABLE', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), -- id=16, 14:00-16:00
+    ('2026-01-22', 'AVAILABLE', 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP); -- id=17, 16:00-18:00
+
+-- Jan 23
+INSERT INTO time_slot (date, status, time_slot_template_id, created_at, updated_at)
+VALUES
+    ('2026-01-23', 'BOOKED', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=18, 09:00-11:00
+    ('2026-01-23', 'BOOKED', 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- id=19, 11:00-13:00
+    ('2026-01-23', 'AVAILABLE', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), -- id=20, 14:00-16:00
+    ('2026-01-23', 'AVAILABLE', 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP); -- id=21, 16:00-18:00
+
+-- =============================================
+-- ADDITIONAL BOOKINGS (for pagination testing)
+-- =============================================
+-- Booking 4: Jan 20, 09:00 - CONFIRMED
+INSERT INTO booking (reference, first_name, last_name, email, phone, vehicle_reg_number, total_price, notes, address, status, vehicle_type_id, package_id, time_slot_id, delivery_type_id, created_at, updated_at)
+VALUES ('DET-20260120-001', 'Anna', 'Kask', 'anna.kask@example.com', '+372 5554 4444', '111AAA', 60.00, NULL, NULL, 'CONFIRMED', 1, 1, 6, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- Booking 5: Jan 20, 11:00 - PENDING
+INSERT INTO booking (reference, first_name, last_name, email, phone, vehicle_reg_number, total_price, notes, address, status, vehicle_type_id, package_id, time_slot_id, delivery_type_id, created_at, updated_at)
+VALUES ('DET-20260120-002', 'Mikk', 'Rebane', 'mikk.rebane@example.com', '+372 5555 5555', '222BBB', 75.00, 'Please call before arrival', 'Viru väljak 4, Tallinn', 'PENDING', 2, 1, 7, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- Booking 6: Jan 20, 14:00 - COMPLETED
+INSERT INTO booking (reference, first_name, last_name, email, phone, vehicle_reg_number, total_price, notes, address, status, vehicle_type_id, package_id, time_slot_id, delivery_type_id, created_at, updated_at)
+VALUES ('DET-20260120-003', 'Laura', 'Saar', 'laura.saar@example.com', '+372 5556 6666', '333CCC', 30.00, NULL, NULL, 'COMPLETED', 1, 2, 8, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- Booking 7: Jan 21, 09:00 - CANCELLED_BY_CUSTOMER
+INSERT INTO booking (reference, first_name, last_name, email, phone, vehicle_reg_number, total_price, notes, address, status, vehicle_type_id, package_id, time_slot_id, delivery_type_id, created_at, updated_at)
+VALUES ('DET-20260121-001', 'Tõnis', 'Mets', 'tonis.mets@example.com', '+372 5557 7777', '444DDD', 50.00, 'Cancelled due to travel', NULL, 'CANCELLED_BY_CUSTOMER', 1, 1, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- Booking 8: Jan 21, 11:00 - CONFIRMED
+INSERT INTO booking (reference, first_name, last_name, email, phone, vehicle_reg_number, total_price, notes, address, status, vehicle_type_id, package_id, time_slot_id, delivery_type_id, created_at, updated_at)
+VALUES ('DET-20260121-002', 'Kristina', 'Lepp', 'kristina.lepp@example.com', '+372 5558 8888', '555EEE', 95.00, 'New car, first wash', NULL, 'CONFIRMED', 1, 1, 11, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- Booking 9: Jan 21, 14:00 - PENDING
+INSERT INTO booking (reference, first_name, last_name, email, phone, vehicle_reg_number, total_price, notes, address, status, vehicle_type_id, package_id, time_slot_id, delivery_type_id, created_at, updated_at)
+VALUES ('DET-20260121-003', 'Andres', 'Kuusk', 'andres.kuusk@example.com', '+372 5559 9999', '666FFF', 65.00, NULL, 'Lasnamäe 25, Tallinn', 'PENDING', 2, 2, 12, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- Booking 10: Jan 21, 16:00 - CONFIRMED
+INSERT INTO booking (reference, first_name, last_name, email, phone, vehicle_reg_number, total_price, notes, address, status, vehicle_type_id, package_id, time_slot_id, delivery_type_id, created_at, updated_at)
+VALUES ('DET-20260121-004', 'Liisa', 'Paju', 'liisa.paju@example.com', '+372 5560 0000', '777GGG', 40.00, NULL, NULL, 'CONFIRMED', 1, 3, 13, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- Booking 11: Jan 22, 09:00 - CANCELLED_BY_ADMIN
+INSERT INTO booking (reference, first_name, last_name, email, phone, vehicle_reg_number, total_price, notes, address, status, vehicle_type_id, package_id, time_slot_id, delivery_type_id, created_at, updated_at)
+VALUES ('DET-20260122-001', 'Martin', 'Vaher', 'martin.vaher@example.com', '+372 5561 1111', '888HHH', 50.00, 'Cancelled - slot unavailable', NULL, 'CANCELLED_BY_ADMIN', 1, 1, 14, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- Booking 12: Jan 22, 11:00 - COMPLETED
+INSERT INTO booking (reference, first_name, last_name, email, phone, vehicle_reg_number, total_price, notes, address, status, vehicle_type_id, package_id, time_slot_id, delivery_type_id, created_at, updated_at)
+VALUES ('DET-20260122-002', 'Kadri', 'Org', 'kadri.org@example.com', '+372 5562 2222', '999III', 85.00, 'Regular customer', NULL, 'COMPLETED', 2, 1, 15, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- Booking 13: Jan 23, 09:00 - PENDING
+INSERT INTO booking (reference, first_name, last_name, email, phone, vehicle_reg_number, total_price, notes, address, status, vehicle_type_id, package_id, time_slot_id, delivery_type_id, created_at, updated_at)
+VALUES ('DET-20260123-001', 'Jaan', 'Sepp', 'jaan.sepp@example.com', '+372 5563 3333', '101JJJ', 70.00, NULL, 'Mustamäe tee 10, Tallinn', 'PENDING', 1, 1, 18, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- Booking 14: Jan 23, 11:00 - CONFIRMED
+INSERT INTO booking (reference, first_name, last_name, email, phone, vehicle_reg_number, total_price, notes, address, status, vehicle_type_id, package_id, time_slot_id, delivery_type_id, created_at, updated_at)
+VALUES ('DET-20260123-002', 'Mari', 'Lill', 'mari.lill@example.com', '+372 5564 4444', '102KKK', 180.00, 'Full detail with ceramic coating', NULL, 'CONFIRMED', 1, 1, 19, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- =============================================
+-- ADDITIONAL BOOKING ADD-ONS
+-- =============================================
+-- Booking 8: Quick ceramic coating + Body waxing
+INSERT INTO booking_add_on (booking_id, add_on_id) VALUES (8, 2);
+INSERT INTO booking_add_on (booking_id, add_on_id) VALUES (8, 3);
+
+-- Booking 12: Textile seat cleaning + Leather seat care
+INSERT INTO booking_add_on (booking_id, add_on_id) VALUES (12, 6);
+INSERT INTO booking_add_on (booking_id, add_on_id) VALUES (12, 7);
+
+-- Booking 14: Polishing + Car ceramic coating + Body waxing
+INSERT INTO booking_add_on (booking_id, add_on_id) VALUES (14, 3);
+INSERT INTO booking_add_on (booking_id, add_on_id) VALUES (14, 4);
+INSERT INTO booking_add_on (booking_id, add_on_id) VALUES (14, 5);
