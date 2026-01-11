@@ -33,6 +33,7 @@ erDiagram
     vehicle_type {
         serial id PK
         varchar_100 name
+        varchar_10 icon
         decimal_10_2 base_price
         text description
         boolean is_deliverable
@@ -67,6 +68,7 @@ erDiagram
     delivery_type {
         serial id PK
         varchar_50 name
+        varchar_10 icon
         decimal_10_2 price
         boolean requires_address
         boolean is_active
@@ -230,7 +232,7 @@ total_price = vehicle_type.base_price
 | `user.role` | ADMIN, CLIENT |
 | `booking.status` | PENDING, CONFIRMED, COMPLETED, CANCELLED_BY_CUSTOMER, CANCELLED_BY_ADMIN |
 | `time_slot.status` | AVAILABLE, BOOKED, BLOCKED |
-| `notification.type` | BOOKING_CONFIRMATION, BOOKING_MODIFICATION, BOOKING_CANCELLATION |
+| `notification.type` | BOOKING_CREATED, BOOKING_CONFIRMED, BOOKING_MODIFIED, BOOKING_COMPLETED, BOOKING_CANCELLED_BY_CUSTOMER, BOOKING_CANCELLED_BY_ADMIN |
 | `notification_log.status` | PENDING, SENT, FAILED |
 
 ---
