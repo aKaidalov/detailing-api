@@ -1,5 +1,6 @@
 package ee.detailing.api.auth;
 
+import ee.detailing.api.common.exceptions.ErrorResponse;
 import ee.detailing.api.user.User;
 import ee.detailing.api.user.UserRepository;
 import jakarta.servlet.http.HttpSession;
@@ -72,7 +73,7 @@ public class AuthController {
     }
 
     @PutMapping("/password")
-    public ResponseEntity<Void> changePassword(@RequestBody ChangePasswordRequest request) {
+    public ResponseEntity<ErrorResponse> changePassword(@RequestBody ChangePasswordRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()
@@ -89,8 +90,19 @@ public class AuthController {
         }
 
         // Verify current password
+        log.info("=== Attempting password change for: {} ===", email);
+        log.debug("=== Current password length: {}, New password length: {} ===",
+                request.getCurrentPassword() != null ? request.getCurrentPassword().length() : "null",
+                request.getNewPassword() != null ? request.getNewPassword().length() : "null");
+
         if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPasswordHash())) {
-            return ResponseEntity.badRequest().build();
+            log.warn("=== Password change failed for {}: incorrect current password ===", email);
+            return ResponseEntity.badRequest().body(new ErrorResponse("password_mismatch", "Current password is incorrect"));
+        }
+
+        // Validate new password
+        if (request.getNewPassword() == null || request.getNewPassword().length() < 6) {
+            return ResponseEntity.badRequest().body(new ErrorResponse("validation_error", "New password must be at least 6 characters"));
         }
 
         // Update password
