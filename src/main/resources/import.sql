@@ -13,7 +13,7 @@ VALUES ('admin@detailing.ee', '$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0F
 -- BUSINESS SETTINGS
 -- =============================================
 INSERT INTO business_settings (name, phone, email, address)
-VALUES ('Detailing Tallinn', '+372 5555 1234', 'info@detailing.ee', 'Pärnu mnt 100, 11312 Tallinn, Estonia');
+VALUES ('Detailing Tallinn', '+372 5555 1234', 'info@detailing.ee', 'Tallinn, Estonia');
 
 -- =============================================
 -- VEHICLE TYPES

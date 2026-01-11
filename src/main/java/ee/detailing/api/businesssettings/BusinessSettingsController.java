@@ -5,18 +5,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/admin/business-settings")
 @RequiredArgsConstructor
 public class BusinessSettingsController {
 
     private final BusinessSettingsService service;
 
-    @GetMapping
+    // Public endpoint - for landing page
+    @GetMapping("/api/v1/business-settings")
+    public ResponseEntity<BusinessSettingsDto> getPublicSettings() {
+        return ResponseEntity.ok(service.getSettings());
+    }
+
+    // Admin endpoints
+    @GetMapping("/api/v1/admin/business-settings")
     public ResponseEntity<BusinessSettingsDto> getSettings() {
         return ResponseEntity.ok(service.getSettings());
     }
 
-    @PutMapping
+    @PutMapping("/api/v1/admin/business-settings")
     public ResponseEntity<BusinessSettingsDto> updateSettings(@RequestBody BusinessSettingsDto dto) {
         return ResponseEntity.ok(service.updateSettings(dto));
     }
